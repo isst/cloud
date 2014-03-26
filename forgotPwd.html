@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>重置密码小窗口</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<style>
+p{font-size:14px;color:#4c4c4c;}
+#mytable tr td{
+	font-size:14px;
+	color:#4c4c4c;
+}
+</style>
+<body>
+	<p>请输入个人验证信息!(务必填写完整)</p>
+	<form id="myform" method="post" action="user/forgotPwd.html">
+    <input type="hidden" name="user_type" value="student"/>
+   	  <table width="100%" cellspacing="0" cellpadding="0" id="mytable">
+        <tr>
+            <td width="26%"><div align="right">姓名:</div></td>
+          <td width="74%"><input type="text" name="name" /></td>
+        </tr>
+          <tr>
+            <td><div align="right">学号:</div></td>
+            <td><input type="text" name="username" /></td>
+          </tr>
+          <tr>
+            <td><div align="right">身份证号:</div></td>
+            <td><input type="text" name="id_no" /></td>
+          </tr>
+          <tr>
+            <td><div align="right">邮箱:</div></td>
+            <td><input type="text" name="email" /></td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td><input type="submit" name="sub" value="提交" /></td>
+          </tr>
+        </table>
+      <div align="center"></div>
+      <div align="center"></div>
+	</form>
+</body>
+</html>

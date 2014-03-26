@@ -1,0 +1,198 @@
+<?php
+
+if (!defined('BASEPATH'))
+	exit('No direct script access allowed');
+
+/**
+ * 支部活动
+ */
+class Activity extends CI_Controller {
+
+	function __construct() {
+		parent::__construct();
+		session_start();
+		// 检查登录状态
+		if (empty($_SESSION['user'])) {
+			die(json_encode(array('statusCode' => '301', 'message' => '会话超时，请重新登录',)));
+		}
+
+		// 检查操作权限
+		$action = $this->uri->segment(3, 'index');
+		$user_permit = array(
+			'administrator' => array('index', 'view', 'add', 'edit', 'del',),
+			'teacher' => array('index', 'view', 'add', 'edit', 'del',),
+			'student' => array('index', 'view', 'apply',),
+			'enterprise' => array(),
+		);
+		if (!in_array($action, $user_permit[$_SESSION['user_type']])) {
+			die(json_encode(array('statusCode' => '300', 'message' => '对不起，您没有权限进行该操作!',)));
+		}
+
+		$this->load->model('party_branch/branch_model');
+		$this->load->model('party_branch/activity_model');
+		$this->activity_type_names = array(
+			'娱乐型',
+			'素质拓展型',
+		);
+		$this->activity_status_names = array(
+			'未通过',
+			'已通过',
+		);
+	}
+
+	/**
+	 * Index Page for this controller.
+	 *
+	 */
+	public function index() {
+		$this->load->library('pagination');
+		$branch_id = empty($_GET['branch_id']) ? 0 : (int) $_GET['branch_id'];
+
+		$this->branch = $this->branch_model->getBranch($branch_id);
+		$this->pagination->total($this->activity_model->countActivitys($branch_id));
+		$this->activities = $this->activity_model->getActivitys($branch_id);
+		$this->load->view($_SESSION['user_type'] . '/party_branch/activity/list', $this);
+	}
+
+	public function apply() {
+		if (empty($_POST)) {
+			$this->branch_id = (int) $_GET['branch_id'];
+			$this->load->view($_SESSION['user_type'] . '/party_branch/activity/apply', $this);
+		} else {
+			$data = array(
+				'party_branch_id' => (int) $_GET['branch_id'],
+				'type' => $_POST['type'],
+				'title' => $_POST['title'],
+				'date' => $_POST['date'],
+				'place' => $_POST['place'],
+				'people_plan' => $_POST['people_plan'],
+				'activity_budget' => $_POST['activity_budget'],
+			);
+			if ($this->activity_model->addActivity($data)) {
+				$ret = array(
+					'statusCode' => '200',
+					'message' => '添加成功',
+					'rel' => 'party_branch_activity',
+					'callbackType' => 'closeCurrent',
+				);
+			} else {
+				$ret = array(
+					'statusCode' => '300',
+					'message' => '添加失败',
+					'rel' => 'party_branch_activity',
+					'callbackType' => 'closeCurrent',
+				);
+			}
+			echo json_encode($ret);
+		}
+	}
+
+	public function add() {
+		if (empty($_POST)) {
+			$this->branch_id = (int) $_GET['branch_id'];
+			$this->load->view($_SESSION['user_type'] . '/party_branch/activity/add', $this);
+		} else {
+			$data = array(
+				'party_branch_id' => (int) $_GET['branch_id'],
+				'type' => $_POST['type'],
+				'title' => $_POST['title'],
+				'date' => $_POST['date'],
+				'place' => $_POST['place'],
+				'people_plan' => $_POST['people_plan'],
+				'people_actual' => $_POST['people_actual'],
+				'activity_budget' => $_POST['activity_budget'],
+				'approval_amount' => $_POST['approval_amount'],
+				'money_usage' => $_POST['money_usage'],
+				'photo' => $_POST['photo'],
+				'video' => $_POST['video'],
+				'summary' => $_POST['summary'],
+				'detail' => $_POST['detail'],
+			);
+			if ($this->activity_model->addActivity($data)) {
+				$ret = array(
+					'statusCode' => '200',
+					'message' => '添加成功',
+					'rel' => 'party_branch_activity',
+					'callbackType' => 'closeCurrent',
+				);
+			} else {
+				$ret = array(
+					'statusCode' => '300',
+					'message' => '添加失败',
+					'rel' => 'party_branch_activity',
+					'callbackType' => 'closeCurrent',
+				);
+			}
+			echo json_encode($ret);
+		}
+	}
+
+	public function edit() {
+		$this->id = empty($_GET['id']) ? 0 : (int) $_GET['id'];
+		$this->activity = $this->activity_model->getActivity($this->id);
+		if (empty($_POST)) {
+			$this->load->view($_SESSION['user_type'] . '/party_branch/activity/edit', $this);
+		} else {
+			$data = array(
+				'party_branch_id' => (int) $_GET['branch_id'],
+				'type' => $_POST['type'],
+				'title' => $_POST['title'],
+				'date' => $_POST['date'],
+				'place' => $_POST['place'],
+				'people_plan' => $_POST['people_plan'],
+				'people_actual' => $_POST['people_actual'],
+				'activity_budget' => $_POST['activity_budget'],
+				'approval_amount' => $_POST['approval_amount'],
+				'money_usage' => $_POST['money_usage'],
+				'photo' => $_POST['photo'],
+				'video' => $_POST['video'],
+				'summary' => $_POST['summary'],
+				'detail' => $_POST['detail'],
+			);
+			if ($this->activity_model->editActivity($this->id, $data)) {
+				$ret = array(
+					'statusCode' => '200',
+					'message' => '修改成功',
+					'rel' => 'party_branch_activity',
+					'callbackType' => 'closeCurrent',
+				);
+			} else {
+				$ret = array(
+					'statusCode' => '300',
+					'message' => '修改失败',
+					'rel' => 'party_branch_activity',
+					'callbackType' => 'closeCurrent',
+				);
+			}
+			echo json_encode($ret);
+		}
+	}
+
+	public function del() {
+		$this->id = empty($_GET['id']) ? 0 : (int) $_GET['id'];
+		if ($this->activity_model->delActivity($this->id)) {
+			$ret = array(
+				'statusCode' => '200',
+				'message' => '删除成功',
+				'rel' => 'party_branch_activity',
+			);
+		} else {
+			$ret = array(
+				'statusCode' => '300',
+				'message' => '删除失败',
+				'rel' => 'party_branch_activity',
+			);
+		}
+		echo json_encode($ret);
+	}
+
+	public function view() {
+		$this->id = empty($_GET['id']) ? 0 : (int) $_GET['id'];
+		$this->activity = $this->activity_model->getActivity($this->id);
+		$this->load->view($_SESSION['user_type'] . '/party_branch/activity/view', $this);
+	}
+
+}
+
+/* End of file activity.php */
+/* Location: ./app/controllers/party_branche/activity.php */

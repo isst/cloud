@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>浙江大学软件学院信息化云平台</title>
+		<link href="themes/css/core.css" rel="stylesheet" type="text/css" />
+		<link href="themes/css/login.css" rel="stylesheet" type="text/css" />
+		<script src="js/jquery-1.7.2.min.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			$(function() {
+				$('#captcha').attr('src', 'user/captcha?' + new Date().getTime());
+				$('#captcha').click(function() {
+					$(this).attr('src', 'user/captcha?' + new Date().getTime());
+				});
+			});
+		</script>
+	</head>
+
+	<body>
+		<div id="login">
+			<div id="login_header">
+				<h1 class="login_logo">
+					<a href="http://www.cst.zju.edu.cn"><img src="themes/default/images/login_logo.png" /></a>
+				</h1>
+				<div class="login_headerContent">
+					<div class="navList">
+						<ul>
+							<li><a href="#">设为首页</a></li>
+							<li><a href="http://www.yoncc.com/" target="_blank">技术支持</a></li>
+						</ul>
+					</div>
+					<h2 class="login_title"><img src="themes/default/images/login_title.png" /></h2>
+				</div>
+			</div>
+			<div id="login_content">
+				<div class="loginForm">
+					<form method="post" action="user/login.html">
+						<p>
+							<label>角&nbsp;&nbsp;&nbsp;&nbsp;色：</label>
+							<select name="user_type">
+								<option value="student">学生</option>
+								<option value="teacher">教师</option>
+								<option value="unit">用人单位</option>
+								<option value="enterprise">企业导师</option>
+								<option value="administrator">管理员</option>
+							</select>
+						</p>
+						<p>
+							<label>用户名：</label>
+							<input type="text" name="username" size="20" class="login_input" />
+						</p>
+						<p>
+							<label>密&nbsp;&nbsp;&nbsp;&nbsp;码：</label>
+							<input type="password" name="password" size="20" class="login_input" />
+						</p>
+						<p>
+							<label>验证码：</label>
+							<input class="code" type="text" name="captcha" size="5" />
+							<span><a href="javascript:;" title="点击更换验证码"><img id="captcha" src="" alt="验证码图片" width="75" height="24" /></a></span>
+						</p>
+						<div class="login_bar">
+							<input class="sub" type="submit" value=" " /><br/>
+						</div>
+					</form>
+				</div>
+				<div class="login_banner"><img src="themes/default/images/login_banner.jpg" /></div>
+				<div class="login_main">
+					<ul class="helpList">
+						<li><a href="#" onclick="window.open('forgotPwd.html','重置密码小窗口','width=400,height=200,top=200,left=250')">忘记密码？</a></li>
+						<!--
+						<li><a href="#">帮助</a></li>
+	 					-->
+					</ul>
+					<div class="login_inner">
+						<p>欢迎进入浙江大学软件学院信息化管理平台</p>
+						<p>系统最佳分辨率 1024*768以上，IE7版本以上。</p>
+					</div>
+				</div>
+			</div>
+			<div id="login_footer">
+				Copyright &copy; 2012 浙江大学软件学院. All Rights Reserved. 技术支持：<a href="http://www.yoncc.com/" target="_blank">YONCC</a>
+			</div>
+		</div>
+	</body>
+</html>
