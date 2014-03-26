@@ -10,6 +10,13 @@
 				<ul>
 					<li><span>基本信息</span></a></li>
 					<li><a href="classes/member.html?class_id=<?php echo $class->id; ?>" class="j-ajax"><span>班级学生</span></a></li>
+                    <?php
+                    if ($class->id) {
+                    ?>
+                        <li><a href="classes/member/internship_list.html?class_id=<?php echo $class->id; ?>" class="j-ajax"><span>实习信息</span></a></li>
+                    <?php
+                    }
+                    ?>
 					<?php if ('administrator' == $user_type): ?>
 						<li><a href="classes/memcon.html?talker_type=teacher&amp;class_id=<?php echo $class->id; ?>" class="j-ajax"><span>教师谈话记录</span></a></li>
 						<li><a href="classes/memcon.html?talker_type=student&amp;class_id=<?php echo $class->id; ?>" class="j-ajax"><span>班委谈话记录</span></a></li>
@@ -83,6 +90,13 @@
 				</div>
 			</div>
 			<div id="class_member">班级学生</div>
+            <?php
+            if ($class->id) {
+            ?>
+           <div id="class_internship">实习信息</div>
+            <?php
+            }
+            ?>
 			<?php if ('administrator' == $user_type): ?>
 				<div id="class_teacher_memcon">教师谈话记录</div>
 				<div id="class_student_memcon">班委谈话记录</div>

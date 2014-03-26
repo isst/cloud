@@ -497,7 +497,7 @@ class Student extends MY_Controller {
 		# 获取实习信息
 		$this->load->model('classes/internship_model');
 		$this->internships = $this->internship_model->getAllInternshipsByStudent($this->id);
-		$this->newest_internship = $this->internship_model->getNewestInternship();
+		$this->newest_internship = $this->internship_model->getNewestInternship($this->id);
         //var_dump($this->newest_internship);
 		$this->load->view('users/student/view', $this);
 	}

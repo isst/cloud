@@ -27,6 +27,7 @@
 					<th>公司地址</th>
 					<th>实习起止时间</th>
 					<th>实习内容</th>
+                    <th>提交时间</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -41,6 +42,7 @@
 						<td><?php echo $internship->company_addr; ?></td>
 						<td><?php echo $internship->internship_time; ?></td>
 						<td><?php echo $internship->internship_content; ?></td>
+                        <td><?php echo $internship->updated; ?></td>
 					</tr>
 				<?php endforeach; ?>
 			</tbody>

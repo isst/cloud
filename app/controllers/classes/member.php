@@ -11,8 +11,8 @@ class Member extends MY_Controller {
 	function __construct() {
 		// 设置各角色的访问权限
 		$this->user_permit = array(
-			'administrator' => array('index', 'view', 'add', 'edit', 'del',),
-			'teacher' => array('index', 'view', 'add', 'edit', 'del', 'supervisor_student_list',),
+			'administrator' => array('index', 'view', 'add', 'edit', 'del', 'internship_list'),
+			'teacher' => array('index', 'view', 'add', 'edit', 'del', 'supervisor_student_list', 'internship_list'),
 			'student' => array('index',),
 			'enterprise' => array(),
 		);
@@ -20,6 +20,7 @@ class Member extends MY_Controller {
 
 		$this->load->model('classes/classes_model');
 		$this->load->model('classes/member_model');
+        $this->load->model('classes/internship_model');
 		$this->member_class_title_names = array(
 			'无职务',
 			'班长',
@@ -48,6 +49,21 @@ class Member extends MY_Controller {
 
 		$this->load->view('classes/member/student_list', $this);
 	}
+
+    public function internship_list() {
+        $this->load->library('pagination');
+        $id = empty($_GET['class_id']) ? 0 : (int) $_GET['class_id'];
+        switch ($this->user->user_type) {
+            case 'teacher':
+                $this->pagination->total($this->internship_model->countInternshipsByClass($id));
+                $this->internships = $this->internship_model->getInternshipsByClass($id);
+                $this->class = $this->classes_model->getClass($id);
+                break;
+            default:
+                break;
+        }
+        $this->load->view('classes/member/internship_list', $this);
+    }
 
 	public function supervisor_student_list() {
 		$this->load->library('pagination');

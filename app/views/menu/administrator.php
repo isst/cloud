@@ -39,6 +39,11 @@
 				<li><a href="classes/memcon.html?talker_type=student" rel="memcon_list" target="navTab">班委谈话记录</a></li>
 			</ul>
 		</li>
+        <li><a href="javascript:;">实习就业</a>
+            <ul>
+                <li><a href="classes/internship/list_all.html" rel="internship_list_all" target="navTab">实习信息</a></li>
+            </ul>
+        </li>
 
 		<!--
 		<li><a href="classes/file_transfer.html" target="navTab">调档管理</a></li>

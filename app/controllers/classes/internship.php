@@ -12,6 +12,7 @@ class Internship extends MY_Controller {
 		// 设置各角色的访问权限
 		$this->user_permit = array(
 			'student' => array('index', 'add', 'edit', 'del'),
+            'administrator' => array('list_all'),
 		);
 		parent::__construct();
 		$this->load->model('classes/internship_model');
@@ -124,6 +125,12 @@ class Internship extends MY_Controller {
 		echo json_encode($ret);
 	}
 
+    public function list_all() {
+        $this->load->library('pagination');
+        $this->pagination->total($this->internship_model->countAllStudentInternships());
+        $this->internships = $this->internship_model->getAllStudentInternships();
+        $this->load->view('classes/member/internship_list', $this);
+    }
 }
 
 /* End of file internship.php */
