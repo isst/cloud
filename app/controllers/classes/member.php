@@ -53,15 +53,9 @@ class Member extends MY_Controller {
     public function internship_list() {
         $this->load->library('pagination');
         $id = empty($_GET['class_id']) ? 0 : (int) $_GET['class_id'];
-        switch ($this->user->user_type) {
-            case 'teacher':
-                $this->pagination->total($this->internship_model->countInternshipsByClass($id));
-                $this->internships = $this->internship_model->getInternshipsByClass($id);
-                $this->class = $this->classes_model->getClass($id);
-                break;
-            default:
-                break;
-        }
+        $this->pagination->total($this->internship_model->countInternshipsByClass($id));
+        $this->internships = $this->internship_model->getInternshipsByClass($id);
+        $this->class = $this->classes_model->getClass($id);
         $this->load->view('classes/member/internship_list', $this);
     }
 

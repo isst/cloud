@@ -20,8 +20,8 @@
             <thead>
             <tr>
                 <th width="30">ID</th>
-                <th width="70">学号</th>
                 <th width="60">姓名</th>
+                <th width="70">学号</th>
                 <th>实习公司名称</th>
                 <th>住宿地址</th>
                 <th>本人联系方式</th>
@@ -37,8 +37,8 @@
             <?php foreach ($internships as $internship): ?>
                 <tr target="internship" rel="<?php echo $internship->id; ?>">
                     <td><?php echo $internship->id; ?></td>
+                    <td><a href="users/student/view.html?id=<?php echo $internship->student_id; ?>" rel="users/student/view.html?id=<?php echo $internship->student_id; ?>" target="navTab"><?php echo $internship->name; ?></a></td>
                     <td><?php echo $internship->student_num; ?></td>
-                    <td><?php echo $internship->name; ?></td>
                     <td><?php echo $internship->company; ?></td>
                     <td><?php echo $internship->lodging; ?></td>
                     <td><?php echo $internship->contact; ?></td>
