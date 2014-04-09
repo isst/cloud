@@ -1,6 +1,16 @@
+<script type="text/javascript">
+    $(function() {
+        $("#internship_add_form").submit(function() {
+            $("#internship_time").val($("#internship_time_start").val() + "至" + $("#internship_time_end").val());
+            return validateCallback(this, dialogAjaxDone);
+        });
 
+        $("#internship_time_start").datepicker();
+        $("#internship_time_end").datepicker();
+    });
+</script>
 <div class="pageContent">
-	<form method="post" action="classes/internship/add.html" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+	<form method="post" action="classes/internship/add.html" class="pageForm required-validate" id="internship_add_form">
 		<div layoutH="56">
 			<p style="margin: 5px;">
 				<label>实习公司：</label>
@@ -28,11 +38,13 @@
 			</p>
 			<p style="margin: 5px;">
 				<label>实习起止时间：</label>
-				<input name="internship_time" class="required textInput" type="text" size="30" value="" />
+                <input name="internship_time" type="hidden" id="internship_time" />
+				从<input class="required textInput" type="text" size="20" value="" id="internship_time_start" />
+                到<input class="required textInput" type="text" size="20" value="" id="internship_time_end" />
 			</p>
-			<p style="margin: 5px;">
-				<label>实习内容：</label>
-				<input name="internship_content" class="required textInput" type="text" size="30" value="" />
+			<p style="margin: 5px; height: 100px;">
+				<label style="float: left; display: block; padding-top: 2px;">实习内容：</label>
+				<textarea name="internship_content" class="required textInput"  style="width: 400px; height: 100px;"></textarea>
 			</p>
 		</div>
 		<div class="formBar">

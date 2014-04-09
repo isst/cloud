@@ -199,19 +199,17 @@
 							</td>
 							<td></td>
 						</tr>
-						<?php if ($newest_internship): ?>
-							<tr style="height: 30px;">
-								<td>实习住宿地址：</td>
-								<td>
-									<?php echo $newest_internship->lodging; ?>
-								</td>
-								<td>实习联系方式：</td>
-								<td>
-									<?php echo $newest_internship->contact; ?>
-								</td>
-								<td></td>
-							</tr>
-						<?php endif; ?>
+                        <tr style="height: 30px;">
+                            <td>实习住宿地址：</td>
+                            <td>
+                                <?php echo $newest_internship ? $newest_internship->lodging : ""; ?>
+                            </td>
+                            <td>实习联系方式：</td>
+                            <td>
+                                <?php echo $newest_internship ? $newest_internship->contact : ''; ?>
+                            </td>
+                            <td></td>
+                        </tr>
 						<?php if ($user_type != 'student'): ?>
 							<tr style="height: 30px;">
 								<td>是否心理困难：</td>

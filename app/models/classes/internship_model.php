@@ -152,34 +152,49 @@ class Internship_model extends CI_Model {
 		return $this->db->delete('class_internships', array('id' => $id));
 	}
 
-    function getAllStudentInternships() {
+    function getAllStudentInternships($conditions = array(), $zj = null) {
         $this->load->library('pagination');
-        $this->db->select("class_internships.*, students.name, students.student_num")
-            ->from('class_internships')
-            ->join('students', 'students.id = class_internships.student_id', 'left')
-            ->order_by('students.username', 'DESC')
+        $this->db->select("s.id AS stu_id, s.student_num, s.name, ci.*")
+            ->from('students s')
+            ->join('(SELECT * FROM (SELECT * FROM class_internships ORDER BY updated DESC) t GROUP BY student_id) ci', 's.id = ci.student_id', 'left')
             ->limit($this->pagination->per, $this->pagination->per * ($this->pagination->cur - 1));
+        if ($conditions) {
+            $where = array();
+            foreach ($conditions as $k => $v) {
+                $where["s.".$k] = $v;
+            }
+            $this->db->where($where);
+        }
+
+        if ($zj) {
+            $this->db->order_by("s.{$zj}", "ASC");
+        } else {
+            $this->db->order_by('s.username', 'ASC');
+        }
+
         $query = $this->db->get();
         return $query->result();
     }
 
-    function countAllStudentInternships() {
-        $this->db->select("class_internships.*, students.name, students.student_num")
-            ->from('class_internships')
-            ->join('students', 'students.id = class_internships.student_id', 'left')
-            ->order_by('students.username', 'DESC');
+    function countAllStudentInternships($conditions = array()) {
+        $this->db->select("COUNT(*) AS total")
+            ->from('students');
+
+        if ($conditions) {
+            $this->db->where($conditions);
+        }
+
         $query = $this->db->get();
-        return $query->result();
+        $row = $query->row();
+        return $row->total;
     }
 
     function getInternshipsByClass($id) {
         $this->load->library('pagination');
-        $this->db->select("class_internships.*, students.name, students.student_num")
-            ->from('class_internships')
-            ->join('students', 'students.id = class_internships.student_id', 'left')
-            ->join('classes', 'classes.id = students.class_id', 'left')
-            ->where(array('classes.id' => $id))
-            ->order_by('students.username', 'DESC')
+        $this->db->select("s.id AS stu_id, s.student_num, s.name, ci.*")
+            ->from('students s')
+            ->join('(SELECT * FROM (SELECT * FROM class_internships ORDER BY updated DESC) t GROUP BY student_id) ci', 's.id = ci.student_id', 'left')
+            ->where(array("s.class_id" => $id))
             ->limit($this->pagination->per, $this->pagination->per * ($this->pagination->cur - 1));
         $query = $this->db->get();
         return $query->result();
@@ -187,11 +202,9 @@ class Internship_model extends CI_Model {
 
     function countInternshipsByClass($id) {
         $this->load->library('pagination');
-        $this->db->select("COUNT(*) AS total")
-            ->from('class_internships')
-            ->join('students', 'students.id = class_internships.student_id', 'left')
-            ->join('classes', 'classes.id = students.class_id', 'left')
-            ->where(array('classes.id' => $id));
+        $this->db->select("COUNT(id) AS total")
+            ->from('students')
+            ->where(array("class_id" => $id));
         $query = $this->db->get();
         $row = $query->row();
         return $row->total;

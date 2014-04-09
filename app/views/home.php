@@ -23,6 +23,7 @@
 		<script src="uploadify/scripts/jquery.uploadify.v2.1.0.js" type="text/javascript"></script>
 
 		<script src="js/dwz.min.js" type="text/javascript"></script>
+        <script src="js/dwz.datepicker.js" type="text/javascript"></script>
 		<script src="js/dwz.regional.zh.js" type="text/javascript"></script>
 
 		<script type="text/javascript">

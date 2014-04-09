@@ -6,8 +6,8 @@
 <div class="pageContent">
 	<div class="panelBar">
 		<ul class="toolBar">
-			<li><a class="add" href="classes/internship/add.html" rel="add_internship" target="dialog" width="400" height="320" mask="true"><span>添加</span></a></li>
-			<li><a class="edit" href="classes/internship/edit.html?id={internship}" target="dialog" width="400" height="320" mask="true" rel="edit_internship" warn="请选择一个实习信息"><span>修改</span></a></li>
+			<li><a class="add" href="classes/internship/add.html" rel="add_internship" target="dialog" width="600" height="420" mask="true"><span>添加</span></a></li>
+			<li><a class="edit" href="classes/internship/edit.html?id={internship}" target="dialog" width="600" height="420" mask="true" rel="edit_internship" warn="请选择一个实习信息"><span>修改</span></a></li>
 			<li><a class="delete" href="classes/internship/del.html?id={internship}" target="ajaxTodo" title="确定要删除吗？" warn="请选择一个实习信息"><span>删除</span></a></li>
 			<li class="line">line</li>
 			<!--<li><a class="icon" href="classes/internship.html" target="navTab" rel="internship"><span>刷新</span></a></li>-->

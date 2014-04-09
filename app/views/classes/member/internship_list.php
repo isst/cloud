@@ -1,7 +1,62 @@
-<form id="pagerForm" method="post" action="classes/internship.html">
+<form id="pagerForm" method="post" action="<?php echo empty($class) ? 'classes/internship/list_all.html' : ('classes/member/internship_list.html?class_id=' . $class->id)?>">
     <input type="hidden" name="pageNum" value="<?php echo $pagination->cur; ?>" />
     <input type="hidden" name="numPerPage" value="<?php echo $pagination->per; ?>" />
 </form>
+
+<?php if (empty($class)):?>
+<div class="pageHeader">
+    <form rel="pagerForm" method="post" action="classes/internship/list_all.html" onsubmit="return '1' === $(this).find('input[name=export]').val() ? true : navTabSearch(this);">
+        <div class="searchBar">
+            专业方向:
+            <select name="major">
+                <option value="">请选择</option>
+                <?php foreach ($major_fields as $field): ?>
+                    <option value="<?php echo $field->name; ?><?php if ($field->name == @$major): ?>" selected="selected<?php endif; ?>"><?php echo $field->name; ?></option>
+                <?php endforeach; ?>
+            </select>
+
+            民族: <input type="text" name="nation" value="<?php echo @$nation; ?>" size="2" />
+
+            姓名: <input type="text" name="name" value="<?php echo @$name; ?>" size="4" />
+
+            学号: <input type="text" name="student_num" value="<?php echo @$student_num; ?>" size="8" />
+
+            籍贯: <input type="text" name="birthplace" value="<?php echo @$birthplace; ?>" size="8" />
+
+            家庭地址: <input type="text" name="home_addr" value="<?php echo @$home_addr; ?>" size="8" />
+
+            年级: <input type="text" name="grade" value="<?php echo @$grade; ?>" size="8" />
+
+            学制: <input type="text" name="edu_system" value="<?php echo @$edu_system; ?>" size="8" />
+
+            在校类型: <input type="text" name="at_school_type" value="<?php echo @$at_school_type; ?>" size="8" />
+
+            <br/>
+            政治面貌:
+            <select name="politics_status">
+                <option value="">请选择</option>
+                <?php foreach ($politics_status_names as $key => $name): ?>
+                    <option value="<?php echo $key; ?><?php if (isset($politics_status) && $key == $politics_status): ?>" selected="selected<?php endif; ?>"><?php echo $name; ?></option>
+                <?php endforeach; ?>
+            </select>
+            班长<input type="checkbox" name="class_title" value="1<?php if (@$class_title): ?>" checked="checked<?php endif; ?>" />
+            支书<input type="checkbox" name="branch_title" value="1<?php if (@$branch_title): ?>" checked="checked<?php endif; ?>" />
+            班委<input type="checkbox" name="branch_title2" value="3<?php if (@$branch_title2): ?>" checked="checked<?php endif; ?>" />
+            心理困难<input type="checkbox" name="is_psychology_hard" value="1<?php if (@$is_psychology_hard): ?>" checked="checked<?php endif; ?>" />
+            经济困难<input type="checkbox" name="is_financial_hard" value="1<?php if (@$is_financial_hard): ?>" checked="checked<?php endif; ?>" />
+            学业困难<input type="checkbox" name="is_study_hard" value="1<?php if (@$is_study_hard): ?>" checked="checked<?php endif; ?>" />
+            <select name="ziduan">
+                <option value="">排序</option>
+                <option value="name<?php if($zj == 'name'):?>" selected="selected<?php endif;?>" >姓名</option>
+                <option value="username<?php if($zj == 'username'):?>" selected="selected<?php endif;?>">学号</option>
+                <option value="class_id<?php if($zj == 'class_id'):?>" selected="selected<?php endif;?>">班级</option>
+                <option value="sexual<?php if($zj == 'sexual'):?>" selected="selected<?php endif;?>">性别</option>
+            </select>
+            <button type="submit">查询</button>
+        </div>
+    </form>
+</div>
+<?php endif;?>
 
 <div class="pageContent">
     <div class="panelBar">
@@ -16,10 +71,9 @@
     </div>
 
     <div id="w_list_print">
-        <table class="list" width="100%" targetType="navTab" layoutH="52">
+        <table class="list" width="100%" targetType="navTab" layoutH="117">
             <thead>
             <tr>
-                <th width="30">ID</th>
                 <th width="60">姓名</th>
                 <th width="70">学号</th>
                 <th>实习公司名称</th>
@@ -35,9 +89,8 @@
             </thead>
             <tbody>
             <?php foreach ($internships as $internship): ?>
-                <tr target="internship" rel="<?php echo $internship->id; ?>">
-                    <td><?php echo $internship->id; ?></td>
-                    <td><a href="users/student/view.html?id=<?php echo $internship->student_id; ?>" rel="users/student/view.html?id=<?php echo $internship->student_id; ?>" target="navTab"><?php echo $internship->name; ?></a></td>
+                <tr target="internship" rel="<?php echo $internship->stu_id; ?>">
+                    <td><a href="users/student/view.html?id=<?php echo $internship->stu_id; ?>" rel="users/student/view.html?id=<?php echo $internship->stu_id; ?>" target="navTab"><?php echo $internship->name; ?></a></td>
                     <td><?php echo $internship->student_num; ?></td>
                     <td><?php echo $internship->company; ?></td>
                     <td><?php echo $internship->lodging; ?></td>
