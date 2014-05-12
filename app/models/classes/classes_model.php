@@ -32,7 +32,7 @@ class Classes_model extends CI_Model {
 	 */
 	function getClasses() {
 		$this->load->library('pagination');
-		$this->db->select('classes.*,'
+		$select = $this->db->select('classes.*,'
 						. ' class_advisers.name as class_adviser_name,'
 						. ' major_advisers.name as major_adviser_name,'
 						. ' branch_instructors.name as branch_instructor_name,'
@@ -43,7 +43,10 @@ class Classes_model extends CI_Model {
 				->join('teachers AS class_advisers', 'classes.class_adviser_id = class_advisers.id', 'left')
 				->join('teachers AS major_advisers', 'classes.major_adviser_id = major_advisers.id', 'left')
 				->join('teachers AS branch_instructors', 'classes.branch_instructor_id = branch_instructors.id', 'left')
-				->limit($this->pagination->per, $this->pagination->per * ($this->pagination->cur - 1));
+                ->order_by('classes.name', 'asc');
+        if ($this->pagination->per > 0) {
+            $select->limit($this->pagination->per, $this->pagination->per * ($this->pagination->cur - 1));
+        }
 		$query = $this->db->get();
 		return $query->result();
 	}
@@ -74,7 +77,7 @@ class Classes_model extends CI_Model {
 	 */
 	function getClassesByClassAdviser($id) {
 		$this->load->library('pagination');
-		$this->db->select('classes.*,'
+		$select = $this->db->select('classes.*,'
 						. ' class_advisers.name as class_adviser_name,'
 						. ' major_advisers.name as major_adviser_name,'
 						. ' branch_instructors.name as branch_instructor_name')
@@ -82,8 +85,10 @@ class Classes_model extends CI_Model {
 				->join('teachers AS class_advisers', 'classes.class_adviser_id = class_advisers.id', 'left')
 				->join('teachers AS major_advisers', 'classes.major_adviser_id = major_advisers.id', 'left')
 				->join('teachers AS branch_instructors', 'classes.branch_instructor_id = branch_instructors.id', 'left')
-				->where(array('class_advisers.id' => $id))
-				->limit($this->pagination->per, $this->pagination->per * ($this->pagination->cur - 1));
+				->where(array('class_advisers.id' => $id));
+        if ($this->pagination->per > 0) {
+            $select->limit($this->pagination->per, $this->pagination->per * ($this->pagination->cur - 1));
+        }
 		$query = $this->db->get();
 		return $query->result();
 	}
@@ -114,7 +119,7 @@ class Classes_model extends CI_Model {
 	 */
 	function getClassesByMajorAdviser($id) {
 		$this->load->library('pagination');
-		$this->db->select('classes.*,'
+		$select = $this->db->select('classes.*,'
 						. ' class_advisers.name as class_adviser_name,'
 						. ' major_advisers.name as major_adviser_name,'
 						. ' branch_instructors.name as branch_instructor_name')
@@ -122,8 +127,10 @@ class Classes_model extends CI_Model {
 				->join('teachers AS class_advisers', 'classes.class_adviser_id = class_advisers.id', 'left')
 				->join('teachers AS major_advisers', 'classes.major_adviser_id = major_advisers.id', 'left')
 				->join('teachers AS branch_instructors', 'classes.branch_instructor_id = branch_instructors.id', 'left')
-				->where(array('major_advisers.id' => $id))
-				->limit($this->pagination->per, $this->pagination->per * ($this->pagination->cur - 1));
+				->where(array('major_advisers.id' => $id));
+        if ($this->pagination->per > 0) {
+            $select->limit($this->pagination->per, $this->pagination->per * ($this->pagination->cur - 1));
+        }
 		$query = $this->db->get();
 		return $query->result();
 	}

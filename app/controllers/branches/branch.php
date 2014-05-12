@@ -39,7 +39,7 @@ class Branch extends MY_Controller {
 	public function grid() {
 
 		$this->load->library('pagination');
-
+        $this->pagination->per = 0;
 		$this->pagination->total($this->classes_model->countClasses());
 		$this->branches = $this->classes_model->getClasses();
 		$this->load->view('branches/branch/grid', $this);

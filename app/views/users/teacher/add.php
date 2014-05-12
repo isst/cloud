@@ -26,6 +26,10 @@
 				<label>联系方式：</label>
 				<input type="text" value="" name="contact" class="textInput">
 			</p>
+            <p>
+                <label>手机号：</label>
+                <input type="text" value="" name="tel" class="textInput">
+            </p>
 		</div>
 		<div class="formBar">
 			<ul>

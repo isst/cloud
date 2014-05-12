@@ -38,6 +38,7 @@ class Classes extends MY_Controller {
 	public function grid() {
 
 		$this->load->library('pagination');
+        $this->pagination->per = 0;
 		switch ($this->user->user_type) {
 			case 'administrator':
 				$this->pagination->total($this->classes_model->countClasses());

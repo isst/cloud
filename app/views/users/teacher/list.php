@@ -23,6 +23,7 @@
 					<th>姓名</th>
 					<th>性别</th>
 					<th>联系方式</th>
+                    <th>手机号</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -33,6 +34,7 @@
 						<td><a class="add" href="users/teacher/view.html?id=<?php echo $teacher->id; ?>" target="dialog" mask="true"><?php echo $teacher->name; ?></a></td>
 						<td><?php echo $teacher->sexual; ?></td>
 						<td><?php echo $teacher->contact; ?></td>
+                        <td><?php echo $teacher->tel; ?></td>
 					</tr>
 				<?php endforeach; ?>
 			</tbody>
@@ -43,10 +45,10 @@
 		<div class="pages">
 			<span>显示</span>
 			<select name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
-				<option value="20">20</option>
-				<option value="50">50</option>
-				<option value="100">100</option>
-				<option value="200">200</option>
+				<?php
+				foreach (array(20,50,100,200) as $per)
+				    echo sprintf('<option value="%s"%s>%s</option>', $per, $per==$pagination->per?' selected="selected"':'', $per);
+				?>
 			</select>
 			<span>条，共<?php echo $pagination->total; ?>条</span>
 		</div>

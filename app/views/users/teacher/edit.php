@@ -9,7 +9,7 @@
 			<?php if ('administrator' == $user->user_type): ?>
 				<p>
 					<label>密码：</label>
-					<input type="password" value="" name="password" class="textInput">
+					<input type="text" value="" name="password" class="textInput">
 				</p>
 			<?php endif; ?>
 			<p>
@@ -28,6 +28,10 @@
 				<label>联系方式：</label>
 				<input type="text" value="<?php echo $teacher->contact; ?>" name="contact" class="textInput">
 			</p>
+            <p>
+                <label>手机号：</label>
+                <input type="text" value="<?php echo $teacher->tel; ?>" name="tel" class="textInput">
+            </p>
 		</div>
 		<div class="formBar">
 			<ul>

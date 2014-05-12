@@ -16,14 +16,25 @@
 				<label>实习公司：</label>
 				<input name="company" class="required textInput" type="text" size="30" value="<?php echo $internship->company; ?>"/>
 			</p>
+            <p style="margin: 5px;">
+                <label>城市：</label>
+                <select name="city_id">
+                    <?php
+                    foreach ($cities as $cityId => $cityName) {
+                        echo sprintf('<option value="%s"%s>%s</option>', $cityId, $internship->city_id == $cityId ? ' selected="selected"' : '', $cityName);
+                    }
+                    echo sprintf('<option value="0"%s>其他</option>', $internship->city_id == 0 ? ' selected="selected"' : '');
+                    ?>
+                </select>
+            </p>
 			<p style="margin: 5px;">
 				<label>住宿地址：</label>
 				<input name="lodging" class="required textInput" type="text" size="30" value="<?php echo $internship->lodging; ?>"/>
 			</p>
-			<p style="margin: 5px;">
+			<!--<p style="margin: 5px;">
 				<label>本人联系方式：</label>
-				<input name="contact" class="required textInput" type="text" size="30" value="<?php echo $internship->contact; ?>"/>
-			</p>
+				<input name="contact" class="required textInput" type="text" size="30" value="<?php //echo $internship->contact; ?>"/>
+			</p>-->
 			<p style="margin: 5px;">
 				<label>公司负责人：</label>
 				<input name="principal" class="required textInput" type="text" size="30" value="<?php echo $internship->principal; ?>"/>

@@ -12,5 +12,8 @@
 			<p>
 				<label>联系方式：</label><?php echo $teacher->contact; ?>
 			</p>
+            <p>
+                <label>手机号：</label><?php echo $teacher->tel; ?>
+            </p>
 		</div>
 </div>

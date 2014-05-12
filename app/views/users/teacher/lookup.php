@@ -55,11 +55,12 @@
 
 			<select name="numPerPage" onchange="dwzPageBreak({targetType: dialog, numPerPage: '10'})">
 				<option value="10" selected="selected">10</option>
-				<option value="20">20</option>
-				<option value="50">50</option>
-				<option value="100">100</option>
+				<?php
+				foreach (array(20,50,100,200) as $per)
+				    echo sprintf('<option value="%s"%s>%s</option>', $per, $per==$pagination->per?' selected="selected"':'', $per);
+                ?>
 			</select>
-			<span>条，共2条</span>
+			<span>条，共<?php echo $pagination->total?>条</span>
 		</div>
 		<div class="pagination" targetType="dialog" totalCount="2" numPerPage="10" pageNumShown="1" currentPage="1"></div>
 	</div>

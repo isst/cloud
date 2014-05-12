@@ -20,8 +20,8 @@
 				<tr>
 					<th width="30">ID</th>
 					<th>实习公司名称</th>
+                    <th>城市</th>
 					<th>住宿地址</th>
-					<th>本人联系方式</th>
 					<th>公司负责人</th>
 					<th>负责人联系方式</th>
 					<th>公司地址</th>
@@ -35,8 +35,8 @@
 					<tr target="internship" rel="<?php echo $internship->id; ?>">
 						<td><?php echo $internship->id; ?></td>
 						<td><?php echo $internship->company; ?></td>
+                        <td><?php echo $internship->city_name ? $internship->city_name : '其他'; ?></td>
 						<td><?php echo $internship->lodging; ?></td>
-						<td><?php echo $internship->contact; ?></td>
 						<td><?php echo $internship->principal; ?></td>
 						<td><?php echo $internship->principal_contact; ?></td>
 						<td><?php echo $internship->company_addr; ?></td>
@@ -53,10 +53,10 @@
 		<div class="pages">
 			<span>显示</span>
 			<select name="numPerPage" onchange="navTabPageBreak({numPerPage: this.value})">
-				<option value="20">20</option>
-				<option value="50">50</option>
-				<option value="100">100</option>
-				<option value="200">200</option>
+                <?php
+                foreach (array(20,50,100,200) as $per)
+                    echo sprintf('<option value="%s"%s>%s</option>', $per, $per==$pagination->per?' selected="selected"':'', $per);
+                ?>
 			</select>
 			<span>条，共<?php echo $pagination->total; ?>条</span>
 		</div>

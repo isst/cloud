@@ -1,6 +1,6 @@
 <form id="pagerForm" method="post" action="classes/member.html?class_id=<?php echo $class->id; ?>">
-	<input type="hidden" name="pageNum" value="<?php echo $pagination->cur; ?>" />
-	<input type="hidden" name="numPerPage" value="<?php echo $pagination->per; ?>" />
+	<!--<input type="hidden" name="pageNum" value="<?php echo $pagination->cur; ?>" />
+	<input type="hidden" name="numPerPage" value="<?php echo $pagination->per; ?>" />-->
 </form>
 
 <div class="pageContent">
@@ -51,18 +51,8 @@
 
 	<div class="panelBar" >
 		<div class="pages">
-			<span>显示</span>
-			<select name="numPerPage" onchange="navTabPageBreak({numPerPage: this.value}, 'classes_member')">
-				<option value="20">20</option>
-				<option value="50">50</option>
-				<option value="100">100</option>
-				<option value="200">200</option>
-			</select>
-			<span>条，共<?php echo $pagination->total; ?>条</span>
+			<span>共<?php echo $pagination->total; ?>条</span>
 		</div>
-
-		<div class="pagination" targetType="navTab" totalCount="<?php echo $pagination->total; ?>" numPerPage="<?php echo $pagination->per; ?>" pageNumShown="10" currentPage="<?php echo $pagination->cur; ?>"></div>
-
 	</div>
 
 </div>

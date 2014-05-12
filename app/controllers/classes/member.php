@@ -31,7 +31,7 @@ class Member extends MY_Controller {
 	public function index() {
 		$this->load->library('pagination');
 		$id = empty($_GET['class_id']) ? 0 : (int) $_GET['class_id'];
-
+        $this->pagination->per = 0;
 		$this->class = $this->classes_model->getClass($id);
 		$this->pagination->total($this->member_model->countMembers($id));
 		$this->members = $this->member_model->getMembers($id);
@@ -42,7 +42,7 @@ class Member extends MY_Controller {
 	public function student_list() {
 		$this->load->library('pagination');
 		$id = empty($_GET['class_id']) ? 0 : (int) $_GET['class_id'];
-
+        $this->pagination->per = 0;
 		$this->class = $this->classes_model->getClass($id);
 		$this->pagination->total($this->member_model->countMembers($id));
 		$this->members = $this->member_model->getMembers($id);

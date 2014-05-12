@@ -1,6 +1,8 @@
 <form id="pagerForm" method="post" action="<?php echo empty($class) ? 'classes/internship/list_all.html' : ('classes/member/internship_list.html?class_id=' . $class->id)?>">
+    <?php if (empty($class)) {?>
     <input type="hidden" name="pageNum" value="<?php echo $pagination->cur; ?>" />
     <input type="hidden" name="numPerPage" value="<?php echo $pagination->per; ?>" />
+    <?php }?>
 </form>
 
 <?php if (empty($class)):?>
@@ -15,23 +17,33 @@
                 <?php endforeach; ?>
             </select>
 
-            民族: <input type="text" name="nation" value="<?php echo @$nation; ?>" size="2" />
+            民族: <input type="text" name="nation" value="<?php echo @$nation; ?>" style="width: 20px;" />
 
-            姓名: <input type="text" name="name" value="<?php echo @$name; ?>" size="4" />
+            姓名: <input type="text" name="name" value="<?php echo @$name; ?>" style="width: 40px;" />
 
-            学号: <input type="text" name="student_num" value="<?php echo @$student_num; ?>" size="8" />
+            学号: <input type="text" name="student_num" value="<?php echo @$student_num; ?>" style="width: 80px;" />
 
-            籍贯: <input type="text" name="birthplace" value="<?php echo @$birthplace; ?>" size="8" />
+            籍贯: <input type="text" name="birthplace" value="<?php echo @$birthplace; ?>" style="width: 80px;" />
 
-            家庭地址: <input type="text" name="home_addr" value="<?php echo @$home_addr; ?>" size="8" />
+            家庭地址: <input type="text" name="home_addr" value="<?php echo @$home_addr; ?>" style="width: 80px;" />
 
-            年级: <input type="text" name="grade" value="<?php echo @$grade; ?>" size="8" />
+            年级: <input type="text" name="grade" value="<?php echo @$grade; ?>" style="width: 40px;" />
 
-            学制: <input type="text" name="edu_system" value="<?php echo @$edu_system; ?>" size="8" />
+            学制: <input type="text" name="edu_system" value="<?php echo @$edu_system; ?>" style="width: 40px;" />
 
-            在校类型: <input type="text" name="at_school_type" value="<?php echo @$at_school_type; ?>" size="8" />
+            在校类型: <input type="text" name="at_school_type" value="<?php echo @$at_school_type; ?>" style="width: 40px;" />
+            <br />
+            城市：
+            <select name="city_id">
+                <option value="-1">请选择</option>
+                <?php foreach ($cities as $cityId => $cityName): ?>
+                    <option value="<?php echo $cityId; ?>"<?php if (isset($city_id) && $city_id == $cityId): ?> selected="selected"<?php endif; ?>><?php echo $cityName; ?></option>
+                <?php endforeach; ?>
+                <option value="0"<?php if (isset($city_id) && $city_id == 0): ?> selected="selected"<?php endif; ?>>其他</option>
+            </select>
+            公司: <input type="text" name="company" value="<?php echo @$company; ?>" size="8" />
+            住宿地址: <input type="text" name="lodging" value="<?php echo @$lodging; ?>" size="8" />
 
-            <br/>
             政治面貌:
             <select name="politics_status">
                 <option value="">请选择</option>
@@ -77,6 +89,7 @@
                 <th width="60">姓名</th>
                 <th width="70">学号</th>
                 <th>实习公司名称</th>
+                <th>城市</th>
                 <th>住宿地址</th>
                 <th>本人联系方式</th>
                 <th>公司负责人</th>
@@ -93,6 +106,7 @@
                     <td><a href="users/student/view.html?id=<?php echo $internship->stu_id; ?>" rel="users/student/view.html?id=<?php echo $internship->stu_id; ?>" target="navTab"><?php echo $internship->name; ?></a></td>
                     <td><?php echo $internship->student_num; ?></td>
                     <td><?php echo $internship->company; ?></td>
+                    <td><?php echo $internship->city_name ? $internship->city_name : '其他'; ?></td>
                     <td><?php echo $internship->lodging; ?></td>
                     <td><?php echo $internship->contact; ?></td>
                     <td><?php echo $internship->principal; ?></td>
@@ -106,21 +120,21 @@
             </tbody>
         </table>
     </div>
-
     <div class="panelBar" >
+    <?php if (!empty($class)) {?>
+        <div class="pages"><span>共<?php echo $pagination->total; ?>条</span></div>
+    <?php } else {?>
         <div class="pages">
             <span>显示</span>
             <select name="numPerPage" onchange="navTabPageBreak({numPerPage: this.value})">
-                <option value="20">20</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-                <option value="200">200</option>
+                <?php
+                foreach (array(20,50,100,200) as $per)
+                    echo sprintf('<option value="%s"%s>%s</option>', $per, $per==$pagination->per?' selected="selected"':'', $per);
+                ?>
             </select>
             <span>条，共<?php echo $pagination->total; ?>条</span>
         </div>
-
         <div class="pagination" targetType="navTab" totalCount="<?php echo $pagination->total; ?>" numPerPage="<?php echo $pagination->per; ?>" pageNumShown="10" currentPage="<?php echo $pagination->cur; ?>"></div>
-
+    <?php }?>
     </div>
-
 </div>

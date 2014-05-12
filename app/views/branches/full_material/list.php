@@ -53,10 +53,11 @@
         <div class="pages">
             <span>显示</span>
             <select name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value},'excellent_full_box')">
-                <option value="20">20</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-                <option value="200">200</option>
+                <?php
+                foreach (array(20,50,100,200) as $per) {
+                    echo sprintf('<option value="%s"%s>%s</option>', $per, $per==$pagination->per?' selected="selected"':'', $per);
+                }
+                ?>
             </select>
             <span>条，共<?php echo $pagination->total; ?>条</span>
         </div>

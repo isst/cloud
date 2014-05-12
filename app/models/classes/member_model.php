@@ -50,10 +50,12 @@ class Member_model extends CI_Model {
 	 */
 	function getMembers($id) {
 		$this->load->library('pagination');
-		$this->db->select('*')
+		$select = $this->db->select('*')
 				->from('students')
-				->where(array('class_id' => $id))
-				->limit($this->pagination->per, $this->pagination->per * ($this->pagination->cur - 1));
+				->where(array('class_id' => $id));
+		if ($this->pagination->per > 0) {
+            $select->limit($this->pagination->per, $this->pagination->per * ($this->pagination->cur - 1));
+        }
 		$query = $this->db->get();
 		return $query->result();
 	}

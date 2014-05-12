@@ -50,6 +50,8 @@ class Teacher extends MY_Controller {
 				'name' => $_POST['name'],
 				'sexual' => $_POST['sexual'],
 				'contact' => $_POST['contact'],
+                'tel' => $_POST['tel'],
+                'updatetime' => date('Y-m-d H:i:s')
 			);
 			if ($this->user_model->addTeacher($data)) {
 				$ret = array(
@@ -84,7 +86,8 @@ class Teacher extends MY_Controller {
 				'name' => $_POST['name'],
 				'sexual' => $_POST['sexual'],
 				'contact' => $_POST['contact'],
-				'updatetime'=>  $time,
+                'tel' => $_POST['tel'],
+				'updatetime'=> date('Y-m-d H:i:s'),
 			);
 			if (!empty($_POST['password'])) {
 				$data['password'] = crypt($_POST['password']);
