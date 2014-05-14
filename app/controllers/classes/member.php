@@ -53,9 +53,47 @@ class Member extends MY_Controller {
     public function internship_list() {
         $this->load->library('pagination');
         $id = empty($_GET['class_id']) ? 0 : (int) $_GET['class_id'];
-        $this->pagination->total($this->internship_model->countInternshipsByClass($id));
-        $this->internships = $this->internship_model->getInternshipsByClass($id);
+
+        $conditions = array();
+
+        if (!empty($_POST)) {
+            if (!empty($_POST['name'])) {
+                $conditions['s.name like'] = '%' . $_POST['name'] . '%';
+                $this->name = $_POST['name'];
+            }
+            if (!empty($_POST['student_num'])) {
+                $conditions['s.student_num like'] = '%' . $_POST['student_num'] . '%';
+                $this->student_num = $_POST['student_num'];
+            }
+
+            if (isset($_POST['city_id'])) {
+                $cityId = intval($_POST['city_id']);
+                if ($cityId >= 0) {
+                    $conditions['ci.city_id'] = $cityId;
+                }
+                $this->city_id = $cityId;
+            } else {
+                $this->city_id = -1;
+            }
+
+            if (!empty($_POST['company'])) {
+                $conditions['ci.company like'] = '%' . $_POST['company'] . '%';
+                $this->company = $_POST['company'];
+            }
+
+            if (!empty($_POST['lodging'])) {
+                $conditions['ci.lodging like'] = '%' . $_POST['lodging'] . '%';
+                $this->lodging = $_POST['lodging'];
+            }
+        }
+
+        $this->pagination->total($this->internship_model->countInternshipsByClass($id, $conditions));
+        $this->internships = $this->internship_model->getInternshipsByClass($id, $conditions);
         $this->class = $this->classes_model->getClass($id);
+
+        $this->load->model('city_model');
+        $this->cities = $this->city_model->getCityNames();
+
         $this->load->view('classes/member/internship_list', $this);
     }
 

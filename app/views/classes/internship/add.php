@@ -10,7 +10,7 @@
     });
 </script>
 <div class="pageContent">
-	<form method="post" action="classes/internship/add.html" class="pageForm required-validate" id="internship_add_form">
+	<form method="post" action="classes/internship/add.html?stuId=<?php echo isset($_GET['stuId'])?$_GET['stuId']:'';?>" class="pageForm required-validate" id="internship_add_form">
 		<div layoutH="56">
 			<p style="margin: 5px;">
 				<label>实习公司：</label>
@@ -30,6 +30,8 @@
 			<p style="margin: 5px;">
 				<label>住宿地址：</label>
 				<input name="lodging" class="required textInput" type="text" size="30" value="" />
+                <p style="margin-left: 10px;">西溪校区范例：浙江大学西溪校区X舍XXX室<br />
+                在外住宿范例：上海市浦东新区华夏X路景东苑X幢－XXX</p>
 			</p>
 			<!--<p style="margin: 5px;">
 				<label>本人联系方式：</label>

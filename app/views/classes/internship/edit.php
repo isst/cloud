@@ -30,6 +30,9 @@
 			<p style="margin: 5px;">
 				<label>住宿地址：</label>
 				<input name="lodging" class="required textInput" type="text" size="30" value="<?php echo $internship->lodging; ?>"/>
+
+                <p style="margin-left: 10px;">西溪校区范例：浙江大学西溪校区X舍XXX室<br />
+                在外住宿范例：上海市浦东新区华夏X路景东苑X幢－XXX</p>
 			</p>
 			<!--<p style="margin: 5px;">
 				<label>本人联系方式：</label>

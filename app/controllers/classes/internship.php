@@ -12,7 +12,7 @@ class Internship extends MY_Controller {
 		// 设置各角色的访问权限
 		$this->user_permit = array(
 			'student' => array('index', 'add', 'edit', 'del'),
-            'administrator' => array('list_all'),
+            'administrator' => array('list_all', 'add', 'edit'),
 		);
 		parent::__construct();
 		$this->load->model('classes/internship_model');
@@ -38,7 +38,7 @@ class Internship extends MY_Controller {
 			$this->load->view('classes/internship/add', $this);
 		} else {
 			$data = array(
-				'student_id' => $this->user->id,
+				'student_id' => (!empty($_GET['stuId'])&&$this->user_type=='administrator')?intval($_GET['stuId']) : $this->user->id,
 				'company' => @$_POST['company'],
 				'lodging' => @$_POST['lodging'],
 				//'contact' => @$_POST['contact'],

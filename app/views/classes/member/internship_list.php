@@ -5,7 +5,7 @@
     <?php }?>
 </form>
 
-<?php if (empty($class)):?>
+<?php if (empty($class)) {?>
 <div class="pageHeader">
     <form rel="pagerForm" method="post" action="classes/internship/list_all.html" onsubmit="return '1' === $(this).find('input[name=export]').val() ? true : navTabSearch(this);">
         <div class="searchBar">
@@ -68,28 +68,56 @@
         </div>
     </form>
 </div>
-<?php endif;?>
+<?php } else { ?>
+<div class="pageHeader">
+    <form rel="pagerForm" method="post" action="classes/member/internship_list.html?class_id=<?php echo $class->id;?>" onsubmit="return divSearch(this, 'class_internship');">
+        <div class="searchBar">
+            城市：
+            <select name="city_id">
+                <option value="-1">请选择</option>
+                <?php foreach ($cities as $cityId => $cityName): ?>
+                    <option value="<?php echo $cityId; ?>"<?php if (isset($city_id) && $city_id == $cityId): ?> selected="selected"<?php endif; ?>><?php echo $cityName; ?></option>
+                <?php endforeach; ?>
+                <option value="0"<?php if (isset($city_id) && $city_id == 0): ?> selected="selected"<?php endif; ?>>其他</option>
+            </select>
+            学号: <input type="text" name="student_num" value="<?php echo @$student_num; ?>" size="8" />
+            姓名: <input type="text" name="name" value="<?php echo @$name; ?>" size="8" />
+            公司: <input type="text" name="company" value="<?php echo @$company; ?>" size="8" />
+            住宿地址: <input type="text" name="lodging" value="<?php echo @$lodging; ?>" size="8" />
+            <button type="submit">查询</button>
+        </div>
+    </form>
+</div>
+<?php }?>
 
 <div class="pageContent">
+    <?php if (!empty($class)) {?>
     <div class="panelBar">
         <ul class="toolBar">
+            <li>
+                <a class="add" href="classes/internship/add.html?stuId={student}" rel="add_internship" target="dialog" width="600" height="420" mask="true">
+                    <span>添加</span>
+                </a>
+            </li>
+            <li>
+                <a class="edit" href="classes/internship/edit.html?id={internship}" target="dialog" width="600" height="420" mask="true" rel="edit_internship" warn="请选择一个实习信息">
+                    <span>修改</span>
+                </a>
+            </li>
             <li class="line">line</li>
-            <?php if (isset($class) && $class->id) {?>
             <li><a class="icon" href="classes/member/internship_list.html?class_id=<?php echo $class->id; ?>" target="ajax" rel="class_internship"><span>刷新</span></a></li>
-            <?php } else { ?>
-            <li><a class="icon" href="classes/internship/list_all.html" rel="internship_list_all" target="ajax"><span>刷新</span></a></li>
-            <?php }?>
         </ul>
     </div>
+    <?php } ?>
 
     <div id="w_list_print">
-        <table class="list" width="100%" targetType="navTab" layoutH="117">
+        <table class="list" width="100%" targetType="navTab" layoutH="<?php echo empty($class) ? 100 : 150;?>">
             <thead>
             <tr>
                 <th width="60">姓名</th>
                 <th width="70">学号</th>
                 <th>实习公司名称</th>
-                <th>城市</th>
+                <th width="30">城市</th>
                 <th>住宿地址</th>
                 <th>本人联系方式</th>
                 <th>公司负责人</th>
@@ -102,7 +130,7 @@
             </thead>
             <tbody>
             <?php foreach ($internships as $internship): ?>
-                <tr target="internship" rel="<?php echo $internship->stu_id; ?>">
+                <tr <?php echo $internship->id?('target="internship" rel="'.$internship->id.'"'):('target="student" rel="'.$internship->stu_id.'"')?>">
                     <td><a href="users/student/view.html?id=<?php echo $internship->stu_id; ?>" rel="users/student/view.html?id=<?php echo $internship->stu_id; ?>" target="navTab"><?php echo $internship->name; ?></a></td>
                     <td><?php echo $internship->student_num; ?></td>
                     <td><?php echo $internship->company; ?></td>

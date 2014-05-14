@@ -190,7 +190,7 @@ class Internship_model extends CI_Model {
         return $row->total;
     }
 
-    function getInternshipsByClass($id) {
+    function getInternshipsByClass($id, $conditions = array()) {
         $this->load->library('pagination');
         $this->db->select("s.id AS stu_id, s.student_num, s.name, ci.*, s.tel contact, c.name city_name")
             ->from('students s')
@@ -198,15 +198,27 @@ class Internship_model extends CI_Model {
             ->join('cities c', 'c.id=ci.city_id', 'left')
             ->where(array("s.class_id" => $id));
             //->limit($this->pagination->per, $this->pagination->per * ($this->pagination->cur - 1));
+
+        if ($conditions) {
+            $this->db->where($conditions);
+        }
+
         $query = $this->db->get();
         return $query->result();
     }
 
-    function countInternshipsByClass($id) {
+    function countInternshipsByClass($id, $conditions = array()) {
         $this->load->library('pagination');
-        $this->db->select("COUNT(id) AS total")
-            ->from('students')
-            ->where(array("class_id" => $id));
+        $this->db->select("COUNT(*) AS total")
+            ->from('students s')
+            ->join('(SELECT * FROM (SELECT * FROM class_internships ORDER BY updated DESC) t GROUP BY student_id) ci', 's.id = ci.student_id', 'left')
+            ->join('cities c', 'c.id=ci.city_id', 'left')
+            ->where(array("s.class_id" => $id));
+
+        if ($conditions) {
+            $this->db->where($conditions);
+        }
+
         $query = $this->db->get();
         $row = $query->row();
         return $row->total;
