@@ -14,9 +14,15 @@
 			<thead>
 				<tr>
 					<th width="80">姓名</th>
-					<th width="120">学号</th>
-					<th>性别</th>
-					<th>班级职务</th>
+					<th width="80">学号</th>
+					<th width="40">性别</th>
+					<th width="60">班级职务</th>
+                    <th width="100">联系电话</th>
+                    <th>实习公司</th>
+                    <?php if ($is_class_monitor) { ?>
+                    <th>住宿地址</th>
+                    <th width="120">更新时间</th>
+                    <?php } ?>
 				</tr>
 			</thead>
 			<tbody>
@@ -26,6 +32,12 @@
 						<td><?php echo $member->student_num; ?></td>
 						<td><?php echo $member->sexual; ?></td>
 						<td><?php echo $member_class_title_names[$member->class_title]; ?></td>
+                        <td><?php echo $member->tel; ?></td>
+                        <td><?php echo $member->company; ?></td>
+                        <?php if ($is_class_monitor) { ?>
+                            <td><?php echo $member->lodging; ?></td>
+                            <td><?php echo $member->updated; ?></td>
+                        <?php } ?>
 					</tr>
 				<?php endforeach; ?>
 			</tbody>

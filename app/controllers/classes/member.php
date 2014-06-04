@@ -45,8 +45,8 @@ class Member extends MY_Controller {
         $this->pagination->per = 0;
 		$this->class = $this->classes_model->getClass($id);
 		$this->pagination->total($this->member_model->countMembers($id));
-		$this->members = $this->member_model->getMembers($id);
-
+		$this->members = $this->member_model->getMembersWithInternship($id);
+        $this->is_class_monitor = $this->user->class_title == 1;
 		$this->load->view('classes/member/student_list', $this);
 	}
 

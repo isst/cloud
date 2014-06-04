@@ -60,7 +60,26 @@ class Member_model extends CI_Model {
 		return $query->result();
 	}
 
-	/**
+    /**
+     * 获取班级成员及实习列表
+     *
+     * @param int $id 班级ID
+     * @return array 班级成员及实习列表
+     */
+    function getMembersWithInternship($id) {
+        $this->load->library('pagination');
+        $select = $this->db->select('*')
+            ->from('students s')
+            ->join('(SELECT * FROM (SELECT * FROM class_internships ORDER BY updated DESC) t GROUP BY student_id) ci', 'ci.student_id=s.id', 'left')
+            ->where(array('s.class_id' => $id));
+        if ($this->pagination->per > 0) {
+            $select->limit($this->pagination->per, $this->pagination->per * ($this->pagination->cur - 1));
+        }
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    /**
 	 * 根据论文导师ID获取学生总数
 	 *
 	 * @param int $id 论文导师ID
