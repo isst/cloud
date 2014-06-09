@@ -55,6 +55,7 @@ class Member extends MY_Controller {
         $id = empty($_GET['class_id']) ? 0 : (int) $_GET['class_id'];
 
         $conditions = array();
+        $zj = 'username';
 
         if (!empty($_POST)) {
             if (!empty($_POST['name'])) {
@@ -85,14 +86,21 @@ class Member extends MY_Controller {
                 $conditions['ci.lodging like'] = '%' . $_POST['lodging'] . '%';
                 $this->lodging = $_POST['lodging'];
             }
+
+            if (!empty($_POST['ziduan'])) {//判断查询字段
+                $zj = $_POST['ziduan'];
+            } else {
+                $zj = 'username';
+            }
         }
 
         $this->pagination->total($this->internship_model->countInternshipsByClass($id, $conditions));
-        $this->internships = $this->internship_model->getInternshipsByClass($id, $conditions);
+        $this->internships = $this->internship_model->getInternshipsByClass($id, $conditions, $zj);
         $this->class = $this->classes_model->getClass($id);
 
         $this->load->model('city_model');
         $this->cities = $this->city_model->getCityNames();
+        $this->zj = $zj;
 
         $this->load->view('classes/member/internship_list', $this);
     }

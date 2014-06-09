@@ -9,6 +9,13 @@
 <div class="pageHeader">
     <form rel="pagerForm" method="post" action="classes/internship/list_all.html" onsubmit="return '1' === $(this).find('input[name=export]').val() ? true : navTabSearch(this);">
         <div class="searchBar">
+            年级: <select name="grade">
+                <?php
+                for ($gradeYear=intval(date('Y')); $gradeYear>=2000; $gradeYear--) {
+                    echo sprintf('<option value="%d"%s>%s</option>', $gradeYear, $gradeYear==@$grade ? ' selected="selected"':'', $gradeYear);
+                }
+                ?>
+            </select>
             专业方向:
             <select name="major">
                 <option value="">请选择</option>
@@ -26,8 +33,6 @@
             籍贯: <input type="text" name="birthplace" value="<?php echo @$birthplace; ?>" style="width: 80px;" />
 
             家庭地址: <input type="text" name="home_addr" value="<?php echo @$home_addr; ?>" style="width: 80px;" />
-
-            年级: <input type="text" name="grade" value="<?php echo @$grade; ?>" style="width: 40px;" />
 
             学制: <input type="text" name="edu_system" value="<?php echo @$edu_system; ?>" style="width: 40px;" />
 
@@ -70,7 +75,7 @@
 </div>
 <?php } else { ?>
 <div class="pageHeader">
-    <form rel="pagerForm" method="post" action="classes/member/internship_list.html?class_id=<?php echo $class->id;?>" onsubmit="return divSearch(this, 'class_internship');">
+    <form rel="pagerForm" method="post" action="classes/member/internship_list.html?class_id=<?php echo $class->id;?>" onsubmit="return divSearch(this, 'internship');">
         <div class="searchBar">
             城市：
             <select name="city_id">
@@ -84,6 +89,16 @@
             姓名: <input type="text" name="name" value="<?php echo @$name; ?>" size="8" />
             公司: <input type="text" name="company" value="<?php echo @$company; ?>" size="8" />
             住宿地址: <input type="text" name="lodging" value="<?php echo @$lodging; ?>" size="8" />
+
+            <select name="ziduan">
+                <option value="">排序</option>
+                <option value="username<?php if($zj == 'username'):?>" selected="selected<?php endif;?>">学号</option>
+                <option value="company<?php if($zj == 'company'):?>" selected="selected<?php endif;?>">实习公司</option>
+                <option value="city_name<?php if($zj == 'city_name'):?>" selected="selected<?php endif;?>">城市</option>
+                <option value="lodging<?php if($zj == 'lodging'):?>" selected="selected<?php endif;?>">住宿地址</option>
+                <option value="company_addr<?php if($zj == 'company_addr'):?>" selected="selected<?php endif;?>">公司地址</option>
+                <option value="updated<?php if($zj == 'updated'):?>" selected="selected<?php endif;?>">提交时间</option>
+            </select>
             <button type="submit">查询</button>
         </div>
     </form>
@@ -100,18 +115,18 @@
                 </a>
             </li>
             <li>
-                <a class="edit" href="classes/internship/edit.html?id={internship}" target="dialog" width="600" height="420" mask="true" rel="edit_internship" warn="请选择一个实习信息">
+                <a class="edit" href="classes/internship/edit.html?id={internshipId}&adminId=1" target="dialog" width="600" height="420" mask="true" rel="edit_internship" warn="请选择一个实习信息">
                     <span>修改</span>
                 </a>
             </li>
             <li class="line">line</li>
-            <li><a class="icon" href="classes/member/internship_list.html?class_id=<?php echo $class->id; ?>" target="ajax" rel="class_internship"><span>刷新</span></a></li>
+            <li><a class="icon" href="classes/member/internship_list.html?class_id=<?php echo $class->id; ?>" target="ajax" rel="internship"><span>刷新</span></a></li>
         </ul>
     </div>
     <?php } ?>
 
     <div id="w_list_print">
-        <table class="list" width="100%" targetType="navTab" layoutH="<?php echo empty($class) ? 100 : 150;?>">
+        <table class="list" width="100%" targetType="<?php echo empty($class) ? 'navTab' : 'internship'?>" layoutH="<?php echo empty($class) ? 100 : 150;?>">
             <thead>
             <tr>
                 <th width="60">姓名</th>
@@ -130,7 +145,7 @@
             </thead>
             <tbody>
             <?php foreach ($internships as $internship): ?>
-                <tr <?php echo $internship->id?('target="internship" rel="'.$internship->id.'"'):('target="student" rel="'.$internship->stu_id.'"')?>">
+                <tr <?php echo $internship->id?('target="internshipId" rel="'.$internship->id.'"'):('target="student" rel="'.$internship->stu_id.'"')?>">
                     <td><a href="users/student/view.html?id=<?php echo $internship->stu_id; ?>" rel="users/student/view.html?id=<?php echo $internship->stu_id; ?>" target="navTab"><?php echo $internship->name; ?></a></td>
                     <td><?php echo $internship->student_num; ?></td>
                     <td><?php echo $internship->company; ?></td>

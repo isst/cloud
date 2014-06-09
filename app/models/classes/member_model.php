@@ -68,9 +68,10 @@ class Member_model extends CI_Model {
      */
     function getMembersWithInternship($id) {
         $this->load->library('pagination');
-        $select = $this->db->select('*')
+        $select = $this->db->select('s.id, s.name, s.student_num, s.sexual, s.class_title, s.tel, ci.company, ci.lodging, ci.updated, c.name as city_name')
             ->from('students s')
             ->join('(SELECT * FROM (SELECT * FROM class_internships ORDER BY updated DESC) t GROUP BY student_id) ci', 'ci.student_id=s.id', 'left')
+            ->join('cities c', 'ci.city_id=c.id', 'left')
             ->where(array('s.class_id' => $id));
         if ($this->pagination->per > 0) {
             $select->limit($this->pagination->per, $this->pagination->per * ($this->pagination->cur - 1));

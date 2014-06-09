@@ -6,6 +6,13 @@
 <div class="pageHeader">
 	<form rel="pagerForm" method="post" action="users/student.html" onsubmit="return '1' === $(this).find('input[name=export]').val() ? true : navTabSearch(this);">
 		<div class="searchBar">
+            年级: <select name="grade">
+                <?php
+                for ($gradeYear=intval(date('Y')); $gradeYear>=2000; $gradeYear--) {
+                    echo sprintf('<option value="%d"%s>%s</option>', $gradeYear, $gradeYear==@$grade ? ' selected="selected"':'', $gradeYear);
+                }
+                ?>
+            </select>
 			专业方向:
 			<select name="major">
 				<option value="">请选择</option>
@@ -23,8 +30,6 @@
 			籍贯: <input type="text" name="birthplace" value="<?php echo @$birthplace; ?>" size="8" />
 
 			家庭地址: <input type="text" name="home_addr" value="<?php echo @$home_addr; ?>" size="8" />
-
-            年级: <input type="text" name="grade" value="<?php echo @$grade; ?>" size="8" />
 
             学制: <input type="text" name="edu_system" value="<?php echo @$edu_system; ?>" size="8" />
 

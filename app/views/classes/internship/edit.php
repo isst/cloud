@@ -10,7 +10,7 @@
     });
 </script>
 <div class="pageContent">
-	<form method="post" action="classes/internship/edit.html?id=<?php echo $internship->id; ?>" class="pageForm required-validate" id="internship_edit_form">
+	<form method="post" action="classes/internship/edit.html?id=<?php echo $internship->id; ?>&adminId=<?php echo @$_GET['adminId'];?>" class="pageForm required-validate" id="internship_edit_form">
 		<div layoutH="56">
 			<p style="margin: 5px;">
 				<label>实习公司：</label>

@@ -74,7 +74,8 @@ class Internship_model extends CI_Model {
             ->from('class_internships ci')
             ->join('cities c', 'c.id=ci.city_id', 'left')
 			->where(array('student_id' => $id))
-			->limit($this->pagination->per, $this->pagination->per * ($this->pagination->cur - 1));
+			->limit($this->pagination->per, $this->pagination->per * ($this->pagination->cur - 1))
+            ->order_by('ci.updated', 'DESC');
 		$query = $this->db->get();
 		return $query->result();
 	}
@@ -190,7 +191,7 @@ class Internship_model extends CI_Model {
         return $row->total;
     }
 
-    function getInternshipsByClass($id, $conditions = array()) {
+    function getInternshipsByClass($id, $conditions = array(), $zj = null) {
         $this->load->library('pagination');
         $this->db->select("s.id AS stu_id, s.student_num, s.name, ci.*, s.tel contact, c.name city_name")
             ->from('students s')
@@ -201,6 +202,16 @@ class Internship_model extends CI_Model {
 
         if ($conditions) {
             $this->db->where($conditions);
+        }
+
+        if ($zj == 'username') {
+            $this->db->order_by('s.username', 'ASC');
+        } else if ($zj == 'city_name') {
+            $this->db->order_by('c.name', 'ASC');
+        } else if ($zj == 'updated') {
+            $this->db->order_by('ci.updated', 'DESC');
+        } else  {
+            $this->db->order_by("ci.{$zj}", "ASC");
         }
 
         $query = $this->db->get();

@@ -12,6 +12,7 @@ class Internship extends MY_Controller {
 		// 设置各角色的访问权限
 		$this->user_permit = array(
 			'student' => array('index', 'add', 'edit', 'del'),
+            'teacher' => array('add', 'edit'),
             'administrator' => array('list_all', 'add', 'edit'),
 		);
 		parent::__construct();
@@ -38,7 +39,7 @@ class Internship extends MY_Controller {
 			$this->load->view('classes/internship/add', $this);
 		} else {
 			$data = array(
-				'student_id' => (!empty($_GET['stuId'])&&$this->user_type=='administrator')?intval($_GET['stuId']) : $this->user->id,
+				'student_id' => (!empty($_GET['stuId'])&&($this->user_type=='administrator'||$this->user_type=='teacher'))?intval($_GET['stuId']) : $this->user->id,
 				'company' => @$_POST['company'],
 				'lodging' => @$_POST['lodging'],
 				//'contact' => @$_POST['contact'],
@@ -54,14 +55,14 @@ class Internship extends MY_Controller {
 				$ret = array(
 					'statusCode' => '200',
 					'message' => '添加成功',
-					'navTabId' => 'internship',
+                    empty($_GET['stuId']) ? 'navTabId' : 'rel' =>  'internship',
 					'callbackType' => 'closeCurrent',
 				);
 			} else {
 				$ret = array(
 					'statusCode' => '300',
 					'message' => '添加失败',
-					'navTabId' => 'internship',
+                    empty($_GET['stuId']) ? 'navTabId' : 'rel' =>  'internship',
 					'callbackType' => 'closeCurrent',
 				);
 			}
@@ -96,14 +97,14 @@ class Internship extends MY_Controller {
 				$ret = array(
 					'statusCode' => '200',
 					'message' => '修改实习信息信息成功',
-					'navTabId' => 'internship',
+                    empty($_GET['adminId']) ? 'navTabId' : 'rel' => 'internship',
 					'callbackType' => 'closeCurrent',
 				);
 			} else {
 				$ret = array(
 					'statusCode' => '300',
 					'message' => '修改实习信息信息失败',
-					'navTabId' => 'internship',
+                    empty($_GET['adminId']) ? 'navTabId' : 'rel' => 'internship',
 					'callbackType' => 'closeCurrent',
 				);
 			}

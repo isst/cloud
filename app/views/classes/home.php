@@ -93,7 +93,7 @@
             <?php
             if ($class->id) {
             ?>
-           <div id="class_internship">实习信息</div>
+           <div id="internship">实习信息</div>
             <?php
             }
             ?>
