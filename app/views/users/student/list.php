@@ -7,6 +7,7 @@
 	<form rel="pagerForm" method="post" action="users/student.html" onsubmit="return '1' === $(this).find('input[name=export]').val() ? true : navTabSearch(this);">
 		<div class="searchBar">
             年级: <select name="grade">
+                <option value="">全部</option>
                 <?php
                 for ($gradeYear=intval(date('Y')); $gradeYear>=2000; $gradeYear--) {
                     echo sprintf('<option value="%d"%s>%s</option>', $gradeYear, $gradeYear==@$grade ? ' selected="selected"':'', $gradeYear);
@@ -15,7 +16,7 @@
             </select>
 			专业方向:
 			<select name="major">
-				<option value="">请选择</option>
+                <option value="">全部</option>
 				<?php foreach ($major_fields as $field): ?>
 					<option value="<?php echo $field->name; ?><?php if ($field->name == @$major): ?>" selected="selected<?php endif; ?>"><?php echo $field->name; ?></option>
 				<?php endforeach; ?>

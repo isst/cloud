@@ -42,6 +42,9 @@ class Member extends MY_Controller {
 	public function student_list() {
 		$this->load->library('pagination');
 		$id = empty($_GET['class_id']) ? 0 : (int) $_GET['class_id'];
+        if ($this->user->class_id != $id) {
+            die(json_encode(array('statusCode' => '300', 'message' => '对不起，您没有权限进行该操作!',)));
+        }
         $this->pagination->per = 0;
 		$this->class = $this->classes_model->getClass($id);
 		$this->pagination->total($this->member_model->countMembers($id));
