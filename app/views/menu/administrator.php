@@ -35,6 +35,7 @@
 		</li>
 		<li><a href="javascript:;">谈话记录</a>
 			<ul>
+                <li><a href="classes/memcon.html?talker_type=administrator&type=administrator" rel="memcon_list" target="navTab">管理员谈话</a></li>
 				<li><a href="classes/memcon.html?talker_type=teacher" rel="memcon_list" target="navTab">教师谈话记录</a></li>
 				<li><a href="classes/memcon.html?talker_type=student" rel="memcon_list" target="navTab">班委谈话记录</a></li>
 			</ul>

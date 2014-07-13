@@ -172,6 +172,38 @@ class Member_model extends CI_Model {
 		$query = $this->db->get();
 		return $query->result();
 	}
+
+    function countStudentsForLookup($name){
+        $this->db->select('COUNT(*) AS total')
+            ->from('students');
+        $name = trim($name);
+        if ($name) {
+            $name = strtr($name, array(
+                "\\" => "\\\\",'_' => '\_','%' => '\%',"'" => "\\'"
+            ));
+            $this->db->where("(username LIKE '%".$name."%' OR name LIKE '%".$name."%')");
+        }
+        $query = $this->db->get();
+        $row = $query->row();
+        return $row->total;
+    }
+
+    function getStudentsForLookup($name) {
+        $this->load->library('pagination');
+        $this->db->select('*')
+            ->from('students')
+            ->order_by("username ASC");
+        $name = trim($name);
+        if ($name) {
+            $name = strtr($name, array(
+                "\\" => "\\\\",'_' => '\_','%' => '\%',"'" => "\\'"
+            ));
+            $this->db->where("(username LIKE '%".$name."%' OR name LIKE '%".$name."%')");
+        }
+        $this->db->limit($this->pagination->per, $this->pagination->per * ($this->pagination->cur - 1));
+        return $this->db->get()->result();
+    }
+
 	/**
 	 * 获取全部学生列表
 	 *

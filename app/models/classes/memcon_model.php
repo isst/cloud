@@ -7,11 +7,6 @@ class Memcon_model extends CI_Model {
 
 	function __construct() {
 		parent::__construct();
-		$this->select_cols = 'class_memcons.*,'
-				. ' students.name as student_name,'
-				. ' students.sexual as student_sexual,'
-				. ' talkers.name as talker_name,'
-				. ' classes.name as class_name,';
 	}
 
 	/**
@@ -20,17 +15,32 @@ class Memcon_model extends CI_Model {
 	 * @return int 谈话记录总数
 	 */
 	function countMemconsByTalkerType($talker_type) {
-		$talker_table = ('teacher' == $talker_type) ? 'teachers' : 'students';
 		$this->db->select('COUNT(*) AS total')
 				->from('class_memcons')
 				->join('students', 'class_memcons.student_id = students.id')
 				->join('classes', 'class_memcons.class_id = classes.id')
-				->join($talker_table . ' as talkers', 'class_memcons.talker_id = talkers.id')
 				->where(array('class_memcons.talker_type' => $talker_type));
+        if (in_array($talker_type, array('teacher', 'student'))) {
+            $talker_table = ('teacher' == $talker_type) ? 'teachers' : 'students';
+            $this->db->join($talker_table . ' as talkers', 'class_memcons.talker_id = talkers.id');
+        }
 		$query = $this->db->get();
 		$row = $query->row();
 		return $row->total;
 	}
+
+    function getSelectCols($talker_type) {
+        $select_cols = 'class_memcons.*,'
+            . ' students.id as student_id,'
+            . ' students.name as student_name,'
+            . ' students.sexual as student_sexual,'
+            . ' classes.name as class_name,';
+        if (null != $talker_type && in_array($talker_type, array('teacher', 'student'))) {
+            $select_cols .= ' talkers.name as talker_name,';
+        }
+
+        return $select_cols;
+    }
 
 	/**
 	 * 根据谈话人类型获取谈话记录列表
@@ -38,16 +48,18 @@ class Memcon_model extends CI_Model {
 	 * @return array 谈话记录列表
 	 */
 	function getMemconsByTalkerType($talker_type) {
-		$talker_table = ('teacher' == $talker_type) ? 'teachers' : 'students';
 		$this->load->library('pagination');
-		$this->db->select($this->select_cols)
+		$this->db->select($this->getSelectCols($talker_type))
 				->from('class_memcons')
 				->join('students', 'class_memcons.student_id = students.id')
 				->join('classes', 'class_memcons.class_id = classes.id')
-				->join($talker_table . ' as talkers', 'class_memcons.talker_id = talkers.id')
 				->where(array('class_memcons.talker_type' => $talker_type))
 				->limit($this->pagination->per, $this->pagination->per * ($this->pagination->cur - 1));
 		 //echo $this->db->last_query();
+        if (in_array($talker_type, array('teacher', 'student'))) {
+            $talker_table = ('teacher' == $talker_type) ? 'teachers' : 'students';
+            $this->db->join($talker_table . ' as talkers', 'class_memcons.talker_id = talkers.id');
+        }
 		$query = $this->db->get();
 		return $query->result();
 	}
@@ -88,7 +100,7 @@ class Memcon_model extends CI_Model {
 			'class_memcons.type' => $type,
 		);
 		$this->load->library('pagination');
-		$this->db->select($this->select_cols)
+		$this->db->select($this->getSelectCols($talker_type))
 				->from('class_memcons')
 				->join('students', 'class_memcons.student_id = students.id')
 				->join('classes', 'class_memcons.class_id = classes.id')
@@ -125,7 +137,7 @@ class Memcon_model extends CI_Model {
 	function getMemconsByClass($talker_type, $class_id) {
 		$talker_table = ('teacher' == $talker_type) ? 'teachers' : 'students';
 		$this->load->library('pagination');
-		$this->db->select($this->select_cols)
+		$this->db->select($this->getSelectCols($talker_type))
 				->from('class_memcons')
 				->join('students', 'class_memcons.student_id = students.id')
 				->join('classes', 'class_memcons.class_id = classes.id')
@@ -163,7 +175,7 @@ class Memcon_model extends CI_Model {
 	function getMemconsByStudent($talker_type, $student_id) {
 		$talker_table = ('teacher' == $talker_type) ? 'teachers' : 'students';
 		$this->load->library('pagination');
-		$this->db->select($this->select_cols)
+		$this->db->select($this->getSelectCols($talker_type))
 				->from('class_memcons')
 				->join('students', 'class_memcons.student_id = students.id')
 				->join('classes', 'class_memcons.class_id = classes.id')
@@ -187,13 +199,17 @@ class Memcon_model extends CI_Model {
 		$row = $query->row();
 		$talker_type = $row->talker_type;
 
-		$talker_table = ('teacher' == $talker_type) ? 'teachers' : 'students';
-		$this->db->select($this->select_cols)
+		$this->db->select($this->getSelectCols($talker_type))
 				->from('class_memcons')
 				->join('students', 'class_memcons.student_id = students.id')
 				->join('classes', 'class_memcons.class_id = classes.id')
-				->join($talker_table . ' as talkers', 'class_memcons.talker_id = talkers.id')
 				->where(array('class_memcons.talker_type' => $talker_type, 'class_memcons.id' => $id));
+
+        if (in_array($talker_type, array('teacher', 'student'))) {
+            $talker_table = ('teacher' == $talker_type) ? 'teachers' : 'students';
+            $this->db->join($talker_table . ' as talkers', 'class_memcons.talker_id = talkers.id');
+        }
+
 		$query = $this->db->get();
 		return $query->row();
 	}

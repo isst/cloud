@@ -7,7 +7,7 @@
     <div class="panelBar">
         <ul class="toolBar">
 			<?php if ($type): ?>
-				<li><a class="add" href="classes/memcon/add.html?talker_type=<?php echo $talker_type; ?>&amp;type=<?php echo $type; ?>" target="dialog" width="645" height="400" mask="true"><span>添加</span></a></li>
+				<li><a class="add" href="classes/memcon/add.html?talker_type=<?php echo $talker_type; ?>&amp;type=<?php echo $type; ?>" target="dialog" width="645" height="400" mask="true" rel="add_memcon"><span>添加</span></a></li>
 			<?php endif; ?>
 			<?php if ($type || 'administrator' == $user_type): ?>
 				<li><a class="delete" href="classes/memcon/del.html?id={memcon}" target="ajaxTodo" title="确定要删除吗？" warn="请选择一条记录"><span>删除</span></a></li>

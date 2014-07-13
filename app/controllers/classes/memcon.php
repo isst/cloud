@@ -79,6 +79,7 @@ class Memcon extends MY_Controller {
 	public function add() {
 		$this->load->model('classes/member_model');
 		$this->type = empty($_GET['type']) ? null : $_GET['type'];
+        $this->talker_type = empty($_GET['talker_type']) ? null : $_GET['talker_type'];
 		$class_id = empty($_GET['class_id']) ? 0 : (int) $_GET['class_id'];
 		if (empty($_POST)) {
 			if ($class_id) {
@@ -106,29 +107,29 @@ class Memcon extends MY_Controller {
 						# 班长谈话
 						$this->members = $this->member_model->getAllMembers($this->user->class_id);
 						break;
-					/*case 'administrator':
+					case 'administrator':
 						#超级管理员谈话
 						$this->members = $this->member_model->getAllStudents();
-						break;*/
+						break;
 					default:
 						break;
 				}
 			}
 			$this->load->view('classes/memcon/add', $this);
 		} else {
-			$this->type = empty($_GET['type']) ? '' : $_GET['type'];
 			$student_id = (int) $_POST['student_id'];
 			$this->student = $this->member_model->getMember($student_id);
 			$nowtime = date("Y-m-d",time());
 			$data = array(
 				'class_id' => $this->student->class_id,
 				'talker_id' => $this->user->id,
-				'talker_type' => $this->user->user_type,
+				'talker_type' => $this->type == 'administrator' ? 'administrator' : $this->user->user_type,
 				'type' => $this->type,
 				'student_id' => $student_id,
 				'title' => $_POST['title'],
 				'time' => $_POST['time'],
 				'content' => $_POST['content'],
+                'talker_name' => isset($_POST['talker_name']) ? $_POST['talker_name'] : null,
 				'inputtime'=>$nowtime,
 			);
 			if ($this->memcon_model->addMemcon($data)) {
@@ -160,6 +161,8 @@ class Memcon extends MY_Controller {
 		if (empty($_POST)) {
 
 			$this->memcon = $this->memcon_model->getMemcon($this->id);
+            $this->type = $this->memcon->type;
+            $this->talker_type = $this->memcon->talker_type;
 			$this->load->model('classes/member_model');
 			$this->members = $this->member_model->getAllMembers($this->memcon->class_id);
 			$this->load->view('classes/memcon/edit', $this);
@@ -169,6 +172,7 @@ class Memcon extends MY_Controller {
 			if(empty($_POST['hid_type'])){
 				$data = array(
 				'student_id' => (int) $_POST['student_id'],
+                'talker_name' => isset($_POST['talker_name']) ? $_POST['talker_name'] : null,
 				'title' => $_POST['title'],
 				'time' => $_POST['time'],
 				'content' => $_POST['content'],
@@ -177,6 +181,7 @@ class Memcon extends MY_Controller {
 			}else{
 				$data = array(
 				'student_id' => (int) $_POST['student_id'],
+                'talker_name' => isset($_POST['talker_name']) ? $_POST['talker_name'] : null,
 				'title' => $_POST['title'],
 				'time' => $_POST['time'],
 				'content' => $_POST['content'],

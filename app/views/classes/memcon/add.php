@@ -4,16 +4,38 @@
         <div class="pageFormContent" layoutH="56">
             <p>
                 <label>学生姓名：</label>
-                <select name="student_id">
-					<?php foreach ($members as $member): ?>
-						<option value="<?php echo $member->id; ?>"><?php echo $member->name; ?></option>
-					<?php endforeach; ?>
-                </select>
+                <?php
+                if (isset($talker_type) && $talker_type == 'administrator') {
+                ?>
+                    <input type="text" readonly="readonly" value="" name="student_name" class="required textInput">
+                    <input name="student_id" type="hidden" value=""/>
+                    <a class="btnLook" href="users/student/lookup.html" target="dialog" mask="true" rel="" lookupGroup="">查找带回</a>
+                <?php
+                } else {
+                ?>
+                    <select name="student_id">
+                        <?php foreach ($members as $member): ?>
+                            <option value="<?php echo $member->id; ?>"><?php echo $member->name; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                <?php
+                }
+                ?>
             </p>
             <p>
                 <label>主题：</label>
                 <input type="text" value="" name="title" class="textInput">
             </p>
+            <?php
+            if (isset($talker_type) && $talker_type == 'administrator') {
+                ?>
+                <p>
+                    <label>谈话者：</label>
+                    <input type="text" value="" name="talker_name" class="textInput">
+                </p>
+            <?php
+            }
+            ?>
             <p>
                 <label>谈话时间：</label>
                 <input type="text" name="time" class="date" dateFmt="yyyy-MM-dd" readonly="true"/>

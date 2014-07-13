@@ -11,7 +11,7 @@ class Student extends MY_Controller {
 	function __construct() {
 		// 设置各角色的访问权限
 		$this->user_permit = array(
-			'administrator' => array('index', 'view', 'add', 'edit', 'del',),
+			'administrator' => array('index', 'view', 'add', 'edit', 'del', 'lookup'),
 			'teacher' => array('view',),
 			'unit' => array('view',),
 			'student' => array('view', 'edit', 'edit_contact', 'print_view'),
@@ -702,6 +702,16 @@ class Student extends MY_Controller {
 		$objWriter->save('php://output');
 		exit;
 	}
+
+    public function lookup() {
+        $this->load->library('pagination');
+        $this->load->model('classes/member_model');
+        $name = isset($_REQUEST['name']) ? $_REQUEST['name'] : "";
+        $this->pagination->total($this->member_model->countStudentsForLookup($name));
+        $this->students = $this->member_model->getStudentsForLookup($name);
+        $this->name = $name;
+        $this->load->view('users/student/lookup', $this);
+    }
 
 }
 
