@@ -42,7 +42,7 @@
                 <a class="inputDateButton" href="javascript:;">选择</a>
             </p>
 			<p>
-                <label>内容：(教师)</label><label><?php echo $memcon->inputtime; ?></label>
+                <label>内容：<?php if (isset($talker_type) && $talker_type != 'administrator'):?>(教师)<?php endif;?></label><label><?php echo $memcon->inputtime; ?></label>
                 <textarea class="editor" tools="mini" name="content" rows="8" style="width: 600px;"><?php echo $memcon->content; ?></textarea>
             </p>
 

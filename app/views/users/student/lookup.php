@@ -10,8 +10,8 @@
 		<div class="searchBar">
 			<ul class="searchContent">
 				<li>
-					<label>姓名:</label>
-					<input class="textInput" name="name" value="<?php echo $name; ?>" type="text">
+					<label>关键字:</label>
+					<input placeholder="姓名或学号" class="textInput" name="name" value="<?php echo $name; ?>" type="text">
 				</li>
 			</ul>
 			<div class="subBar">
