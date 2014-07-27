@@ -20,8 +20,11 @@
 					<li>
 						<a href="javascript:;"><span>贷款信息</span></a>
 					</li>
+                    <li>
+                        <a href="classes/memcon/student_list.html?student_id=<?php echo $student->id; ?>" class="j-ajax"><span>谈话记录</span></a>
+                    </li>
 					<li>
-						<a href="javascript:;"><span>实习信息</span></a>
+						<a href="classes/internship/student_list.html?student_id=<?php echo $student->id; ?>" class="j-ajax"><span>实习信息</span></a>
 					</li>
 					<li>
 						<a href="javascript:;"><span>就业信息</span></a>
@@ -529,39 +532,13 @@
 				<h2 class="contentTitle">贷款信息</h2>
 			</div>
 
-			<div layoutH="72" style="display:block; overflow:auto; border:solid 1px #CCC; line-height:21px; background:#fff; margin: 0 auto; padding: 10px;">
-				<h2 class="contentTitle">实习信息</h2>
-				<table class="list" width="95%">
-					<thead>
-						<tr>
-							<th>实习公司名称</th>
-							<th>住宿地址</th>
-							<th>本人联系方式</th>
-							<th>公司负责人</th>
-							<th>负责人联系方式</th>
-							<th>公司地址</th>
-							<th>实习起止时间</th>
-							<th>实习内容</th>
-                            <th>提交时间</th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php foreach ($internships as $internship): ?>
-							<tr style="height: 30px;">
-								<td><?php echo $internship->company; ?></td>
-								<td><?php echo $internship->lodging; ?></td>
-								<td><?php echo $internship->contact; ?></td>
-								<td><?php echo $internship->principal; ?></td>
-								<td><?php echo $internship->principal_contact; ?></td>
-								<td><?php echo $internship->company_addr; ?></td>
-								<td><?php echo $internship->internship_time; ?></td>
-								<td><?php echo $internship->internship_content; ?></td>
-                                <td><?php echo $internship->updated; ?></td>
-							</tr>
-						<?php endforeach; ?>
-					</tbody>
-				</table>
-			</div>
+            <div layout="72" id="memcon_list" style="display:block; overflow:auto; border:solid 1px #CCC; line-height:21px; background:#fff; margin: 0 auto; padding: 10px;">
+
+            </div>
+
+			<div layout="72" id="internship_student_list" style="display:block; overflow:auto; border:solid 1px #CCC; line-height:21px; background:#fff; margin: 0 auto; padding: 10px;">
+
+            </div>
 
 			<div layoutH="72" style="display:block; overflow:auto; border:solid 1px #CCC; line-height:21px; background:#fff; margin: 0 auto; padding: 10px;">
 				<h2 class="contentTitle">就业信息</h2>

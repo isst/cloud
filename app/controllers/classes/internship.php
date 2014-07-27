@@ -13,7 +13,7 @@ class Internship extends MY_Controller {
 		$this->user_permit = array(
 			'student' => array('index', 'add', 'edit', 'del'),
             'teacher' => array('add', 'edit'),
-            'administrator' => array('list_all', 'add', 'edit'),
+            'administrator' => array('list_all', 'add', 'edit', 'feedback'),
 		);
 		parent::__construct();
 		$this->load->model('classes/internship_model');
@@ -28,6 +28,19 @@ class Internship extends MY_Controller {
 		$this->internships = $this->internship_model->getInternshipsByStudent($this->user->id);
 		$this->load->view('classes/internship/list', $this);
 	}
+
+    public function student_list() {
+        $this->student_id = empty($_GET['student_id']) ? 0 : (int) $_GET['student_id'];
+        if ('student' == $this->user_type && $this->user->id != $this->student_id) {
+            die(json_encode(array('statusCode' => '300', 'message' => '对不起，您没有权限查看他人资料!',)));
+        }
+
+        $this->load->library('pagination');
+        $this->pagination->total($this->internship_model->countInternshipsByStudent($this->student_id));
+        $this->internships = $this->internship_model->getInternshipsByStudent($this->student_id);
+        $this->load->view('classes/internship/student_list', $this);
+
+    }
 
 	/**
 	 * 创建实习信息
@@ -111,6 +124,40 @@ class Internship extends MY_Controller {
 			echo json_encode($ret);
 		}
 	}
+
+
+    /**
+     * 编辑实习反馈信息
+     */
+    public function feedback() {
+        $id = (int) $_GET['id'];
+        $this->internship = $this->internship_model->getInternship($id);
+        if (empty($_POST)) {
+            $this->load->view('classes/internship/feedback/edit', $this);
+        } else {
+            $data = array(
+                'feedback_editor' => @$_POST['feedback_editor'],
+                'feedback_content' => @$_POST['feedback_content'],
+                'feedback_time' => date('Y-m-d H:i:s')
+            );
+            if ($this->internship_model->editInternship($id, $data)) {
+                $ret = array(
+                    'statusCode' => '200',
+                    'message' => '修改实习信息信息成功',
+                    'rel' => 'internship_student_list',
+                    'callbackType' => 'closeCurrent',
+                );
+            } else {
+                $ret = array(
+                    'statusCode' => '300',
+                    'message' => '修改实习信息信息失败',
+                    'rel' => 'internship_student_list',
+                    'callbackType' => 'closeCurrent',
+                );
+            }
+            echo json_encode($ret);
+        }
+    }
 
 	/**
 	 * 删除实习信息

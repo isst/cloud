@@ -1,6 +1,6 @@
 
 <div class="pageContent">
-    <form method="post" action="classes/memcon/edit.html?id=<?php echo $memcon->id; ?>" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+    <form method="post" action="classes/memcon/edit.html?id=<?php echo $memcon->id; ?>&from=<?php echo @$_GET['from']?>&rel=<?php echo @$_GET['rel']?>" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
         <div class="pageFormContent" layoutH="56">
             <p>
                 <label>学生姓名：</label>
@@ -15,7 +15,7 @@
                     ?>
                     <select name="student_id">
                         <?php foreach ($members as $member): ?>
-                            <option value="<?php echo $member->id; ?>"><?php echo $member->name; ?></option>
+                            <option value="<?php echo $member->id; ?>"<?php echo $memcon->student_id==$member->id?' selected="selected"':''?>><?php echo $member->name; ?></option>
                         <?php endforeach; ?>
                     </select>
                 <?php
@@ -31,14 +31,24 @@
                 ?>
                 <p>
                     <label>谈话者：</label>
-                    <input type="text" value="<?php echo $memcon->talker_name; ?>" name="talker_name" class="textInput">
+                    <input type="text" value="<?php echo $memcon->talker_name; ?>" name="talker_name" class="required textInput">
                 </p>
             <?php
             }
             ?>
             <p>
+                <label>重要程度：</label>
+                <select name="status">
+                    <?php
+                    foreach ($this->statusLabels as $status => $label) {
+                        echo sprintf('<option value="%s"%s>%s</option>', $status, $memcon->status == $status ? ' selected="selected"' : '', $label);
+                    }
+                    ?>
+                </select>
+            </p>
+            <p>
                 <label>谈话时间：</label>
-                <input type="text" value="<?php echo $memcon->time; ?>" name="time" class="date" dateFmt="yyyy-MM-dd" readonly="true"/>
+                <input type="text" value="<?php echo $memcon->time; ?>" name="time" class="required date" dateFmt="yyyy-MM-dd" readonly="true"/>
                 <a class="inputDateButton" href="javascript:;">选择</a>
             </p>
 			<p>

@@ -30,13 +30,14 @@ class Memcon extends MY_Controller {
 		$this->talker_type = empty($_GET['talker_type']) ? '' : $_GET['talker_type'];
 		//var_dump($this->talker_type);die;
 		$class_id = empty($_GET['class_id']) ? 0 : (int) $_GET['class_id'];
+        $this->statusLabels = $this->memcon_model->getStatusLabels();
+        $this->type = empty($_GET['type']) ? '' : $_GET['type'];
 		if ($class_id) {
 			$this->class = $this->classes_model->getClass($class_id);
 			$this->pagination->total($this->memcon_model->countMemconsByClass($this->talker_type, $class_id));
 			$this->memcons = $this->memcon_model->getMemconsByClass($this->talker_type, $class_id);
 			$this->load->view('classes/memcon/class_list', $this);
 		} else {
-			$this->type = empty($_GET['type']) ? '' : $_GET['type'];
 			if ($this->type&&$this->type<>'administrator') {
 				$this->pagination->total($this->memcon_model->countMemconsByTalker($this->user->user_type, $this->type, $this->user->id));
 				$this->memcons = $this->memcon_model->getMemconsByTalker($this->user->user_type, $this->type, $this->user->id);
@@ -68,20 +69,28 @@ class Memcon extends MY_Controller {
 
 	public function student_list() {
 		$this->load->library('pagination');
-		$this->talker_type = empty($_GET['talker_type']) ? null : $_GET['talker_type'];
+		$this->talker_type = $this->user_type;
+        $this->type = $this->user_type == 'administrator' ? 'administrator' : 'moral_edu';
 		$this->student_id = empty($_GET['student_id']) ? 0 : (int) $_GET['student_id'];
+        $this->statusLabels = $this->memcon_model->getStatusLabels();
 
-		$this->pagination->total($this->memcon_model->countMemconsByStudent($this->talker_type, $this->student_id));
-		$this->memcons = $this->memcon_model->getMemconsByStudent($this->talker_type, $this->student_id);
+        $talker_type = $this->user_type == "administrator" ? null : $this->user_type;
+		$this->pagination->total($this->memcon_model->countMemconsByStudent($talker_type, $this->student_id));
+		$this->memcons = $this->memcon_model->getMemconsByStudent($talker_type,  $this->student_id);
 		$this->load->view('classes/memcon/student_list', $this);
 	}
 
 	public function add() {
 		$this->load->model('classes/member_model');
 		$this->type = empty($_GET['type']) ? null : $_GET['type'];
-        $this->talker_type = empty($_GET['talker_type']) ? null : $_GET['talker_type'];
+        $this->talker_type = empty($_GET['talker_type']) ? $this->user_type : $_GET['talker_type'];
 		$class_id = empty($_GET['class_id']) ? 0 : (int) $_GET['class_id'];
+
+        $this->statusLabels = $this->memcon_model->getStatusLabels();
 		if (empty($_POST)) {
+            $this->student_id = empty($_GET['student_id']) ? 0 : (int) $_GET['student_id'];
+            $this->student_name = $this->student_id > 0 ? $this->member_model->getMemberName($this->student_id) : '';
+
 			if ($class_id) {
 				$this->class_id = (int) $_GET['class_id'];
 				$this->type = 'moral_edu';
@@ -129,24 +138,32 @@ class Memcon extends MY_Controller {
 				'title' => $_POST['title'],
 				'time' => $_POST['time'],
 				'content' => $_POST['content'],
-                'talker_name' => isset($_POST['talker_name']) ? $_POST['talker_name'] : null,
+                'status' => $_POST['status'],
+                'talker_name' => isset($_POST['talker_name']) ? $_POST['talker_name'] : $this->user->name,
 				'inputtime'=>$nowtime,
+                'updatetime'=>$nowtime,
+                'place'=>'',
+                'admin_content' => ''
 			);
 			if ($this->memcon_model->addMemcon($data)) {
 				$ret = array(
 					'statusCode' => '200',
 					'message' => '添加成功',
-					'navTabId' => 'memcon_list',
 					'callbackType' => 'closeCurrent',
 				);
 			} else {
 				$ret = array(
 					'statusCode' => '300',
 					'message' => '添加失败',
-					'navTabId' => 'memcon_list',
 					'callbackType' => 'closeCurrent',
 				);
 			}
+            if (isset($_GET['rel'])&&!empty($_GET['rel'])) {
+                $ret['rel'] = $_GET['rel'];
+            } else {
+                $ret[isset($_GET['from']) && $_GET['from']=='div' ? 'rel' : 'navTabId'] = 'memcon_list';
+            }
+
 			echo json_encode($ret);
 		}
 	}
@@ -158,8 +175,8 @@ class Memcon extends MY_Controller {
 		}else{
 			$this->hid_type =$_GET['type'];
 		}
+        $this->statusLabels = $this->memcon_model->getStatusLabels();
 		if (empty($_POST)) {
-
 			$this->memcon = $this->memcon_model->getMemcon($this->id);
             $this->type = $this->memcon->type;
             $this->talker_type = $this->memcon->talker_type;
@@ -167,43 +184,46 @@ class Memcon extends MY_Controller {
 			$this->members = $this->member_model->getAllMembers($this->memcon->class_id);
 			$this->load->view('classes/memcon/edit', $this);
 		} else {
-			//var_dump($_POST['hid_type']);
-			$nowtime = date("Y-m-d",time());
-			if(empty($_POST['hid_type'])){
-				$data = array(
-				'student_id' => (int) $_POST['student_id'],
-                'talker_name' => isset($_POST['talker_name']) ? $_POST['talker_name'] : null,
-				'title' => $_POST['title'],
-				'time' => $_POST['time'],
-				'content' => $_POST['content'],
-				'inputtime'=>$nowtime,
-				);
-			}else{
-				$data = array(
-				'student_id' => (int) $_POST['student_id'],
-                'talker_name' => isset($_POST['talker_name']) ? $_POST['talker_name'] : null,
-				'title' => $_POST['title'],
-				'time' => $_POST['time'],
-				'content' => $_POST['content'],
-				'admin_content' => $_POST['admin_content'],
-				'updatetime'=>$nowtime,
-				);
-			}
+            $nowtime = date("Y-m-d",time());
+            $data = array(
+                'student_id' => (int) $_POST['student_id'],
+                'title' => $_POST['title'],
+                'status' => $_POST['status'],
+                'time' => $_POST['time'],
+                'content' => $_POST['content'],
+                'updatetime'=>$nowtime,
+            );
+
+
+            if (isset($_POST['talker_name'])) {
+                $data['talker_name'] = $_POST['talker_name'];
+            }
+
+            if ($this->user_type == 'administrator' && isset($_POST['admin_content'])) {
+                $data['admin_content'] = $_POST['admin_content'];
+            }
+
 			if ($this->memcon_model->editMemcon($this->id, $data)) {
 				$ret = array(
 					'statusCode' => '200',
 					'message' => '修改成功',
-					'navTabId' => 'memcon_list',
 					'callbackType' => 'closeCurrent',
 				);
 			} else {
 				$ret = array(
 					'statusCode' => '300',
 					'message' => '修改失败',
-					'navTabId' => 'memcon_list',
+                    'rel' => 'memcon_list',
 					'callbackType' => 'closeCurrent',
 				);
 			}
+
+            if (isset($_GET['rel'])&&!empty($_GET['rel'])) {
+                $ret['rel'] = $_GET['rel'];
+            } else {
+                $ret[isset($_GET['from']) && $_GET['from']=='div' ? 'rel' : 'navTabId'] = 'memcon_list';
+            }
+
 			echo json_encode($ret);
 		}
 	}
@@ -214,20 +234,26 @@ class Memcon extends MY_Controller {
 			$ret = array(
 				'statusCode' => '200',
 				'message' => '删除成功',
-				'navTabId' => 'memcon_list',
 			);
 		} else {
 			$ret = array(
 				'statusCode' => '300',
 				'message' => '删除失败',
-				'navTabId' => 'memcon_list',
 			);
 		}
+
+
+        if (isset($_GET['rel'])&&!empty($_GET['rel'])) {
+            $ret['rel'] = $_GET['rel'];
+        } else {
+            $ret[isset($_GET['from']) && $_GET['from']=='div' ? 'rel' : 'navTabId'] = 'memcon_list';
+        }
 		echo json_encode($ret);
 	}
 
 	public function view() {
 		$this->id = empty($_GET['id']) ? 0 : (int) $_GET['id'];
+        $this->statusLabels = $this->memcon_model->getStatusLabels();
 
 		$this->memcon = $this->memcon_model->getMemcon($this->id);
 		if (!( 'administrator' == $this->user->user_type )) {

@@ -131,16 +131,15 @@
             <thead>
             <tr>
                 <th width="60">姓名</th>
-                <th width="70">学号</th>
+                <th width="80">学号</th>
                 <th>实习公司名称</th>
                 <th width="30">城市</th>
                 <th>住宿地址</th>
-                <th>本人联系方式</th>
+                <th>联系方式</th>
                 <th>公司负责人</th>
-                <th>负责人联系方式</th>
                 <th>公司地址</th>
-                <th>实习起止时间</th>
-                <th>实习内容</th>
+                <th>起止时间</th>
+                <th>实习反馈</th>
                 <th>提交时间</th>
             </tr>
             </thead>
@@ -153,11 +152,10 @@
                     <td><?php echo $internship->city_name ? $internship->city_name : '其他'; ?></td>
                     <td><?php echo $internship->lodging; ?></td>
                     <td><?php echo $internship->contact; ?></td>
-                    <td><?php echo $internship->principal; ?></td>
-                    <td><?php echo $internship->principal_contact; ?></td>
+                    <td><?php echo $internship->principal; ?><br /><?php echo $internship->principal_contact; ?></td>
                     <td><?php echo $internship->company_addr; ?></td>
                     <td><?php echo $internship->internship_time; ?></td>
-                    <td><?php echo $internship->internship_content; ?></td>
+                    <td><?php echo $internship->feedback_content; ?></td>
                     <td><?php echo $internship->updated; ?></td>
                 </tr>
             <?php endforeach; ?>

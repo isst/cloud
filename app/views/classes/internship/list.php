@@ -20,7 +20,7 @@
 				<tr>
 					<th width="30">ID</th>
 					<th>实习公司名称</th>
-                    <th>城市</th>
+                    <th width="30">城市</th>
 					<th>住宿地址</th>
 					<th>公司负责人</th>
 					<th>负责人联系方式</th>

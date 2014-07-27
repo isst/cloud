@@ -7,9 +7,12 @@
 
     <div class="panelBar">
         <ul class="toolBar">
-            <li><a class="icon" href="classes/memcon/student_list.html?student_id=<?php echo $student_id; ?>" target="ajax" rel="class_memcon"><span>刷新</span></a></li>
+            <li><a class="add" href="classes/memcon/add.html?talker_type=<?php echo $talker_type; ?>&amp;type=<?php echo $type; ?>&from=div&student_id=<?php echo $student_id?>" target="dialog" width="645" height="400" mask="true" rel="add_memcon"><span>添加</span></a></li>
+            <li><a class="delete" href="classes/memcon/del.html?id={memcon}&from=div" target="ajaxTodo" title="确定要删除吗？" warn="请选择一条记录"><span>删除</span></a></li>
+            <li><a class="edit" href="classes/memcon/edit.html?id={memcon}&from=div" target="dialog" width="645" height="400"  mask="true" warn="请选择一条记录"><span>修改</span></a></li>
         </ul>
     </div>
+
     <div id="w_list_print">
         <table class="list" width="100%" targetType="navTab" layoutH="104"><!-- layoutH="52" -->
             <thead>
@@ -18,6 +21,7 @@
                     <th width="150">被谈话人</th>
                     <th>主题</th>
                     <th>谈话时间</th>
+                    <th>重要程度</th>
                 </tr>
             </thead>
             <tbody>
@@ -41,16 +45,18 @@
 							<?php endif; ?>
 						</td>
 						<td><?php echo $memcon->time; ?></td>
+                        <td><?php echo $statusLabels[$memcon->status]?></td>
 					</tr>
 				<?php endforeach; ?>
             </tbody>
+         </table>
     </div>
 
 
     <div class="panelBar" >
         <div class="pages">
             <span>显示</span>
-            <select name="numPerPage" onchange="navTabPageBreak({numPerPage: this.value}, 'class_memcon')">
+            <select name="numPerPage" onchange="navTabPageBreak({numPerPage: this.value}, 'memcon_list')">
                 <?php
                 foreach (array(20,50,100,200) as $per)
                     echo sprintf('<option value="%s"%s>%s</option>', $per, $per==$pagination->per?' selected="selected"':'', $per);
@@ -59,7 +65,7 @@
             <span>条，共<?php echo $pagination->total; ?>条</span>
         </div>
 
-        <div class="pagination"  targetType="dialog" rel="class_memcon" totalCount="<?php echo $pagination->total; ?>" numPerPage="<?php echo $pagination->per; ?>" pageNumShown="10" currentPage="<?php echo $pagination->cur; ?>"></div>
+        <div class="pagination" rel="memcon_list" totalCount="<?php echo $pagination->total; ?>" numPerPage="<?php echo $pagination->per; ?>" pageNumShown="10" currentPage="<?php echo $pagination->cur; ?>"></div>
 
     </div>
 

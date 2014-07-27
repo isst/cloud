@@ -168,7 +168,8 @@ class Member_model extends CI_Model {
 		$this->load->library('pagination');
 		$this->db->select('*')
 				->from('students')
-				->where(array('class_id' => $id));
+				->where(array('class_id' => $id))
+                ->order_by("username");
 		$query = $this->db->get();
 		return $query->result();
 	}
@@ -229,6 +230,15 @@ class Member_model extends CI_Model {
 		$query = $this->db->get();
 		return $query->row();
 	}
+
+    function getMemberName($id) {
+        $this->db->select('name')
+            ->from('students')
+            ->where(array('id' => $id));
+        $query = $this->db->get();
+        $row = $query->row();
+        return $row ? $row->name : '';
+    }
 
 	/**
 	 * 获取具备职务的班级成员姓名

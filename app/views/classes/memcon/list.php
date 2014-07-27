@@ -10,7 +10,7 @@
 				<li><a class="add" href="classes/memcon/add.html?talker_type=<?php echo $talker_type; ?>&amp;type=<?php echo $type; ?>" target="dialog" width="645" height="400" mask="true" rel="add_memcon"><span>添加</span></a></li>
 			<?php endif; ?>
 			<?php if ($type || 'administrator' == $user_type): ?>
-				<li><a class="delete" href="classes/memcon/del.html?id={memcon}" target="ajaxTodo" title="确定要删除吗？" warn="请选择一条记录"><span>删除</span></a></li>
+				<li><a class="delete" href="classes/memcon/del.html?id={memcon}<?php if('administrator' == $user_type){?>&type=admin<?php }?>" target="ajaxTodo" title="确定要删除吗？" warn="请选择一条记录"><span>删除</span></a></li>
 				<li><a class="edit" href="classes/memcon/edit.html?id={memcon}<?php if('administrator' == $user_type){?>&type=admin<?php }?>" target="dialog" width="645" height="400"  mask="true" warn="请选择一条记录"><span>修改</span></a></li>
 			<?php endif; ?>
             <li class="line">line</li>
@@ -26,6 +26,7 @@
                     <th width="150">被谈话人</th>
                     <th>主题</th>
                     <th>谈话时间</th>
+                    <th>重要程度</th>
                 </tr>
             </thead>
             <tbody>
@@ -49,6 +50,7 @@
 							<?php endif; ?>
 						</td>
 						<td><?php echo $memcon->time; ?></td>
+                        <td><?php echo $statusLabels[$memcon->status]?></td>
 					</tr>
 				<?php endforeach; ?>
             </tbody>
@@ -67,8 +69,8 @@
             <span>条，共<?php echo $pagination->total; ?>条</span>
         </div>
 
-        <div class="pagination" <!--rel="memcon_list"--> totalCount="<?php echo $pagination->total; ?>" numPerPage="<?php echo $pagination->per; ?>" pageNumShown="10" currentPage="<?php echo $pagination->cur; ?>"></div>
+        <div class="pagination" targetType="navTab" totalCount="<?php echo $pagination->total; ?>" numPerPage="<?php echo $pagination->per; ?>" pageNumShown="10" currentPage="<?php echo $pagination->cur; ?>"></div>
 
     </div>
 
-</div>
+</div>∂
