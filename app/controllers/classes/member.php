@@ -105,6 +105,14 @@ class Member extends MY_Controller {
         $this->cities = $this->city_model->getCityNames();
         $this->zj = $zj;
 
+        $this->load->model('classes/internship_feedback_model');
+        foreach ($this->internships as $internship) {
+            $feedback = $this->internship_feedback_model->getLatestFeedback($internship->student_id);
+            if ($feedback) {
+                $internship->feedback_content = $feedback->content;
+            }
+        }
+
         $this->load->view('classes/member/internship_list', $this);
     }
 

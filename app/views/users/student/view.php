@@ -26,6 +26,11 @@
 					<li>
 						<a href="classes/internship/student_list.html?student_id=<?php echo $student->id; ?>" class="j-ajax"><span>实习信息</span></a>
 					</li>
+                    <li>
+                        <a href="classes/internship_feedback.html?student_id=<?php echo $student->id;?>"  class="j-ajax">
+                            <span>实习反馈</span>
+                        </a>
+                    </li>
 					<li>
 						<a href="javascript:;"><span>就业信息</span></a>
 					</li>
@@ -537,6 +542,10 @@
             </div>
 
 			<div layout="72" id="internship_student_list" style="display:block; overflow:auto; border:solid 1px #CCC; line-height:21px; background:#fff; margin: 0 auto; padding: 10px;">
+
+            </div>
+
+            <div layout="72" id="internship_feedback_list" style="display:block; overflow:auto; border:solid 1px #CCC; line-height:21px; background:#fff; margin: 0 auto; padding: 10px;">
 
             </div>
 

@@ -30,7 +30,10 @@ class Internship extends MY_Controller {
 	}
 
     public function student_list() {
+        $this->load->model('user_model');
+
         $this->student_id = empty($_GET['student_id']) ? 0 : (int) $_GET['student_id'];
+
         if ('student' == $this->user_type && $this->user->id != $this->student_id) {
             die(json_encode(array('statusCode' => '300', 'message' => '对不起，您没有权限查看他人资料!',)));
         }
@@ -38,6 +41,16 @@ class Internship extends MY_Controller {
         $this->load->library('pagination');
         $this->pagination->total($this->internship_model->countInternshipsByStudent($this->student_id));
         $this->internships = $this->internship_model->getInternshipsByStudent($this->student_id);
+
+
+        $this->load->model('classes/internship_feedback_model');
+        foreach ($this->internships as $internship) {
+            $feedback = $this->internship_feedback_model->getLatestFeedback($internship->student_id);
+            if ($feedback) {
+                $internship->feedback_content = $feedback->content;
+            }
+        }
+
         $this->load->view('classes/internship/student_list', $this);
 
     }
@@ -183,6 +196,7 @@ class Internship extends MY_Controller {
     public function list_all() {
         $this->load->library('pagination');
         $this->load->model('classes/major_field_model');
+        $this->load->model('classes/internship_feedback_model');
         $this->load->model('classes/classes_model');
         $this->major_fields = $this->major_field_model->getAllMajor_fields();
         $this->class_names = $this->classes_model->getClassNames();
@@ -192,6 +206,12 @@ class Internship extends MY_Controller {
             $this->zj = ' ';
             $this->pagination->total($this->internship_model->countAllStudentInternships());
             $this->internships = $this->internship_model->getAllStudentInternships();
+            foreach ($this->internships as $internship) {
+                $feedback = $this->internship_feedback_model->getLatestFeedback($internship->student_id);
+                if ($feedback) {
+                    $internship->feedback_content = $feedback->content;
+                }
+            }
         } else {
             $conditions = array();
             if (!empty($_POST['major'])) {

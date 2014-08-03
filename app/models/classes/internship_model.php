@@ -80,6 +80,15 @@ class Internship_model extends CI_Model {
 		return $query->result();
 	}
 
+    function getInternshipOptions($studentId) {
+        $this->db->select('id, company')
+            ->from('class_internships')
+            ->where(array('student_id' => $studentId))
+            ->order_by('updated', 'DESC');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
 	/**
 	 * 根据学生获取所有实习信息列表
 	 *

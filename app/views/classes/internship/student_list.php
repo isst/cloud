@@ -7,11 +7,6 @@
     <?php if ($user_type != 'student') {?>
         <div class="panelBar">
             <ul class="toolBar">
-                <li>
-                    <a class="edit" href="classes/internship/feedback.html?id={internshipId}" target="dialog" width="600" height="420" mask="true" rel="edit_internship_feedback" warn="请选择一个实习信息">
-                        <span>实习反馈</span>
-                    </a>
-                </li>
             </ul>
         </div>
     <?php }?>
