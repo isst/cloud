@@ -20,17 +20,22 @@
 					<li>
 						<a href="javascript:;"><span>贷款信息</span></a>
 					</li>
+
+                    <?php if ('student' != $user_type):?>
                     <li>
                         <a href="classes/memcon/student_list.html?student_id=<?php echo $student->id; ?>" class="j-ajax"><span>谈话记录</span></a>
                     </li>
+                    <?php endif;?>
 					<li>
 						<a href="classes/internship/student_list.html?student_id=<?php echo $student->id; ?>" class="j-ajax"><span>实习信息</span></a>
 					</li>
+                    <?php if ('administrator' == $user_type):?>
                     <li>
                         <a href="classes/internship_feedback.html?student_id=<?php echo $student->id;?>"  class="j-ajax">
                             <span>实习反馈</span>
                         </a>
                     </li>
+                    <?php endif;?>
 					<li>
 						<a href="javascript:;"><span>就业信息</span></a>
 					</li>
@@ -537,17 +542,20 @@
 				<h2 class="contentTitle">贷款信息</h2>
 			</div>
 
+            <?php if ('student' != $user_type):?>
             <div layout="72" id="memcon_list" style="display:block; overflow:auto; border:solid 1px #CCC; line-height:21px; background:#fff; margin: 0 auto; padding: 10px;">
 
             </div>
-
+            <?php endif;?>
 			<div layout="72" id="internship_student_list" style="display:block; overflow:auto; border:solid 1px #CCC; line-height:21px; background:#fff; margin: 0 auto; padding: 10px;">
 
             </div>
 
+            <?php if ('administrator' == $user_type):?>
             <div layout="72" id="internship_feedback_list" style="display:block; overflow:auto; border:solid 1px #CCC; line-height:21px; background:#fff; margin: 0 auto; padding: 10px;">
 
             </div>
+            <?php endif;?>
 
 			<div layoutH="72" style="display:block; overflow:auto; border:solid 1px #CCC; line-height:21px; background:#fff; margin: 0 auto; padding: 10px;">
 				<h2 class="contentTitle">就业信息</h2>

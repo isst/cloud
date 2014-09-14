@@ -75,7 +75,8 @@ class Internship extends MY_Controller {
 				'company_addr' => @$_POST['company_addr'],
 				'internship_time' => @$_POST['internship_time'],
 				'internship_content' => @$_POST['internship_content'],
-                'updated' => date('Y-m-d H:i:s')
+                'updated' => date('Y-m-d H:i:s'),
+                'created' => date('Y-m-d H:i:s')
 			);
 			if ($this->internship_model->addInternship($data)) {
 				$ret = array(
@@ -102,13 +103,14 @@ class Internship extends MY_Controller {
 	public function edit() {
 		$id = (int) $_GET['id'];
 		$this->internship = $this->internship_model->getInternship($id);
+        $canUpdateCompany = time() - 30*86400 < strtotime($this->internship->created);
 		if (empty($_POST)) {
             $this->load->model('city_model');
             $this->cities = $this->city_model->getCityNames();
+            $this->canUpdateCompany = $canUpdateCompany;
 			$this->load->view('classes/internship/edit', $this);
 		} else {
 			$data = array(
-				'company' => @$_POST['company'],
 				'lodging' => @$_POST['lodging'],
 				//'contact' => @$_POST['contact'],
                 'city_id' => @$_POST['city_id'],
@@ -119,6 +121,10 @@ class Internship extends MY_Controller {
 				'internship_content' => @$_POST['internship_content'],
                 'updated' => date('Y-m-d H:i:s')
 			);
+            if ($canUpdateCompany) {
+                $data['company'] = @$_POST['company'];
+            }
+
 			if ($this->internship_model->editInternship($id, $data)) {
 				$ret = array(
 					'statusCode' => '200',
@@ -177,7 +183,16 @@ class Internship extends MY_Controller {
 	 */
 	public function del() {
 		$this->id = empty($_GET['id']) ? 0 : (int) $_GET['id'];
-		if ($this->internship_model->delInternship($this->id)) {
+        $internship = $this->internship_model->getInternship($this->id);
+
+        $canUpdateCompany = time() - 30*86400 < strtotime($internship->created);
+        if ($this->user_type == 'student' && !$canUpdateCompany) {
+            $ret = array(
+                'statusCode' => '300',
+                'message' => '超过一个月的实习信息不能删除！',
+                'navTabId' => 'internship',
+            );
+        } else if ($this->internship_model->delInternship($this->id)) {
 			$ret = array(
 				'statusCode' => '200',
 				'message' => '删除成功',
@@ -206,12 +221,6 @@ class Internship extends MY_Controller {
             $this->zj = ' ';
             $this->pagination->total($this->internship_model->countAllStudentInternships());
             $this->internships = $this->internship_model->getAllStudentInternships();
-            foreach ($this->internships as $internship) {
-                $feedback = $this->internship_feedback_model->getLatestFeedback($internship->student_id);
-                if ($feedback) {
-                    $internship->feedback_content = $feedback->content;
-                }
-            }
         } else {
             $conditions = array();
             if (!empty($_POST['major'])) {
@@ -306,6 +315,13 @@ class Internship extends MY_Controller {
             $this->load->model('user_model');
             $this->pagination->total($this->internship_model->countAllStudentInternships($conditions));
             $this->internships = $this->internship_model->getAllStudentInternships($conditions, $zj);
+        }
+
+        foreach ($this->internships as $internship) {
+            $feedback = $this->internship_feedback_model->getLatestFeedback($internship->student_id);
+            if ($feedback) {
+                $internship->feedback_content = $feedback->content;
+            }
         }
 
         $this->load->view('classes/member/internship_list', $this);

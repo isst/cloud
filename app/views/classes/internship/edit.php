@@ -14,7 +14,7 @@
 		<div layoutH="56">
 			<p style="margin: 5px;">
 				<label>实习公司：</label>
-				<input name="company" class="required textInput" type="text" size="30" value="<?php echo $internship->company; ?>"/>
+				<input name="company" class="required textInput" type="text" size="30" value="<?php echo $internship->company; ?>"<?php echo $canUpdateCompany?'':' disabled="disabled"'?>/>
 			</p>
             <p style="margin: 5px;">
                 <label>城市：</label>
