@@ -37,6 +37,10 @@
             }
             ?>
             <p>
+                <label>地点：</label>
+                <input type="text" value="" name="address" class="textInput">
+            </p>
+            <p>
                 <label>重要程度：</label>
                 <select name="status">
                     <?php

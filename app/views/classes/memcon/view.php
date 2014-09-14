@@ -7,6 +7,12 @@
             <label>学生姓名：</label><?php echo $memcon->student_name; ?>
         </div>
         <div style="position: relative; padding: 10px;">
+            <label>地点：</label><?php echo $memcon->address; ?>
+        </div>
+        <div style="position: relative; padding: 10px;">
+            <label>重要程度：</label><?php echo $statusLabels[$memcon->status]?>
+        </div>
+        <div style="position: relative; padding: 10px;">
             <label>谈话时间：</label><?php echo $memcon->time; ?>
         </div>
         <div style="position: relative; padding: 5px;">

@@ -32,6 +32,7 @@ class Memcon extends MY_Controller {
 		$class_id = empty($_GET['class_id']) ? 0 : (int) $_GET['class_id'];
         $this->statusLabels = $this->memcon_model->getStatusLabels();
         $this->type = empty($_GET['type']) ? '' : $_GET['type'];
+        $this->readOnly = false;
 		if ($class_id) {
 			$this->class = $this->classes_model->getClass($class_id);
 			$this->pagination->total($this->memcon_model->countMemconsByClass($this->talker_type, $class_id));
@@ -57,6 +58,11 @@ class Memcon extends MY_Controller {
 							$this->pagination->total($this->memcon_model->countMemconsByStudent($this->talker_type, $this->user->id));
 							$this->memcons = $this->memcon_model->getMemconsByStudent($this->talker_type, $this->user->id);
 							break;
+                        case 'teacher':
+                            $this->pagination->total($this->memcon_model->countMemconsByTeacher($this->talker_type, $this->type, $this->user->id));
+                            $this->memcons = $this->memcon_model->getMemconsByTeacher($this->talker_type, $this->type, $this->user->id);
+                            $this->readOnly = true;
+                            break;
 						default:
 							break;
 					}
@@ -138,6 +144,7 @@ class Memcon extends MY_Controller {
 				'title' => $_POST['title'],
 				'time' => $_POST['time'],
 				'content' => $_POST['content'],
+                'address' => $_POST['address'],
                 'status' => $_POST['status'],
                 'talker_name' => isset($_POST['talker_name']) ? $_POST['talker_name'] : $this->user->name,
 				'inputtime'=>$nowtime,
@@ -191,6 +198,7 @@ class Memcon extends MY_Controller {
                 'status' => $_POST['status'],
                 'time' => $_POST['time'],
                 'content' => $_POST['content'],
+                'address' => $_POST['address'],
                 'updatetime'=>$nowtime,
             );
 

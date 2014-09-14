@@ -12,6 +12,7 @@
 						<li><a href="classes/classes/grid.html?type=moral_edu" target="navTab" rel="classes_grid" class="default">班级网格</a></li>
 						<!--<li><a href="classes/home/teacher_home.html" target="navTab" rel="teacher_class_home" class="default">我的班级</a></li>-->
 						<li><a href="classes/memcon.html?talker_type=teacher&amp;type=moral_edu" rel="memcon_list" target="navTab">谈话记录</a></li>
+                        <li><a href="classes/memcon.html?talker_type=administrator&amp;type=administrator" rel="memcon_admin_list" target="navTab">管理员谈话</a></li>
 					</ul>
 				</li>
 			<?php endif; ?>

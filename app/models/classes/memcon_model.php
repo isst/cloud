@@ -84,6 +84,40 @@ class Memcon_model extends CI_Model {
 		return $row->total;
 	}
 
+    function getMemconsByTeacher($talker_type, $type, $teacherId) {
+        $where = array(
+            'class_memcons.talker_type' => $talker_type,
+            'class_memcons.type' => $type
+        );
+        $this->load->library('pagination');
+        $this->db->select($this->getSelectCols())
+            ->from('class_memcons')
+            ->join('students', 'class_memcons.student_id = students.id')
+            ->join('classes', 'class_memcons.class_id = classes.id')
+            ->where($where)
+            ->where("(classes.class_adviser_id={$teacherId} OR classes.major_adviser_id={$teacherId})")
+            ->limit($this->pagination->per, $this->pagination->per * ($this->pagination->cur - 1))
+            ->order_by("time", "desc");
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function countMemconsByTeacher($talker_type, $type, $teacherId) {
+        $where = array(
+            'class_memcons.talker_type' => $talker_type,
+            'class_memcons.type' => $type
+        );
+        $this->load->library('pagination');
+        $this->db->select('COUNT(*) AS total')
+            ->from('class_memcons')
+            ->join('students', 'class_memcons.student_id = students.id')
+            ->join('classes', 'class_memcons.class_id = classes.id')
+            ->where($where)
+            ->where("(classes.class_adviser_id={$teacherId} OR classes.major_adviser_id={$teacherId})");
+        $query = $this->db->get();
+        return $query->row()->total;
+    }
+
 	/**
 	 * 根据谈话人获取谈话记录列表
 	 *

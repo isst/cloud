@@ -6,6 +6,7 @@
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
+            <?php if (!$readOnly): ?>
 			<?php if ($type): ?>
 				<li><a class="add" href="classes/memcon/add.html?talker_type=<?php echo $talker_type; ?>&amp;type=<?php echo $type; ?>" target="dialog" width="645" height="400" mask="true" rel="add_memcon"><span>添加</span></a></li>
 			<?php endif; ?>
@@ -15,6 +16,7 @@
 			<?php endif; ?>
             <li class="line">line</li>
             <!--<li><a class="icon" href="classes/memcon.html?talker_type=<?php echo $talker_type; ?>&amp;type=<?php echo $type; ?>" target="ajax" rel="memcon_list"><span>刷新</span></a></li>-->
+        <?php endif;?>
         </ul>
     </div>
 
@@ -25,6 +27,7 @@
                     <th width="150">谈话人</th>
                     <th width="150">被谈话人</th>
                     <th>主题</th>
+                    <th>地点</th>
                     <th>谈话时间</th>
                     <th>重要程度</th>
                 </tr>
@@ -49,6 +52,7 @@
 								<a href="classes/memcon/view.html?id=<?php echo $memcon->id; ?>" target="dialog" width="645" height="400" mask="true"><?php echo $memcon->title; ?></a>
 							<?php endif; ?>
 						</td>
+                        <td><?php echo $memcon->address; ?></td>
 						<td><?php echo $memcon->time; ?></td>
                         <td><?php echo $statusLabels[$memcon->status]?></td>
 					</tr>

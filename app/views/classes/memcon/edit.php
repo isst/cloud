@@ -26,6 +26,10 @@
                 <label>主题：</label>
                 <input type="text" value="<?php echo $memcon->title; ?>" name="title" class="textInput">
             </p>
+            <p>
+                <label>地点：</label>
+                <input type="text" value="" name="address" class="textInput">
+            </p>
             <?php
             if (isset($talker_type) && $talker_type == 'administrator') {
                 ?>
