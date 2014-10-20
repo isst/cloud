@@ -12,7 +12,7 @@ class Internship extends MY_Controller {
 		// 设置各角色的访问权限
 		$this->user_permit = array(
 			'student' => array('index', 'add', 'edit', 'del'),
-            'teacher' => array('add', 'edit'),
+            'teacher' => array('student_list', 'add', 'edit'),
             'administrator' => array('list_all', 'add', 'edit', 'feedback'),
 		);
 		parent::__construct();
